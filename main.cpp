@@ -506,8 +506,7 @@ static_assert(to_int(FIB(N9)) == 34);
 
 int main() {
 #define print_num(n) std::cout << #n " = " << to_int(n) << '\n'
-#define print_bool(b)                                                          \
-  std::cout << #b " = " << std::boolalpha << b(true)(false) << '\n'
+#define print_bool(b) std::cout << #b " = " << b('T')('F') << '\n'
 
   print_bool(T);
   print_bool(F);
@@ -520,7 +519,7 @@ int main() {
 
   print_num(ADD(N3)(N2));
   print_num(MUL(N3)(N2));
-  print_num(POW(N3)(SUCC(N2)));
+  print_num(POW(N3)(N4));
 
   print_bool(IS_ZERO(N0));
   print_bool(IS_ZERO(SUCC(N0)));
