@@ -216,11 +216,12 @@ static_assert(to_int(SUCC(SUCC(SUCC(N0)))) == 3);
 auto N4 = SUCC(N3);
 static_assert(to_int(N4) == 4);
 
+namespace hidden { // used to avoid name collisions
 /**
  * Predecessor
  * λnfx.n (λgh.h (g f)) (λu.x) (λu.u)
  */
-auto PRED2 = [](auto n) {
+auto PRED = [](auto n) {
   return [=](auto f) {
     return [=](auto x) {
       return n([=](auto g) {
@@ -231,9 +232,10 @@ auto PRED2 = [](auto n) {
     };
   };
 };
-static_assert(to_int(PRED2(N1)) == 0);
-static_assert(to_int(PRED2(N2)) == 1);
-static_assert(to_int(PRED2(N3)) == 2);
+static_assert(to_int(PRED(N1)) == 0);
+static_assert(to_int(PRED(N2)) == 1);
+static_assert(to_int(PRED(N3)) == 2);
+} // namespace hidden
 
 /**
  * Bluebird combinator
@@ -249,17 +251,19 @@ auto B = [](auto f) {
 };
 static_assert(eq(B(NOT)(NOT)(T), T));
 
+namespace hidden {
 /**
  * Successor written in terms of B
  * λnf.Bf(nf)
  */
-auto SUCC2 = [](auto n) {
+auto SUCC = [](auto n) {
   return [=](auto f) {
     return B(f)(n(f));
   };
 };
-static_assert(to_int(SUCC2(N0)) == 1);
-static_assert(to_int(SUCC2(N3)) == 4);
+static_assert(to_int(SUCC(N0)) == 1);
+static_assert(to_int(SUCC(N3)) == 4);
+} // namespace hidden
 
 /**
  * Addition
@@ -292,7 +296,7 @@ static_assert(to_int(N7) == 7);
 static_assert(to_int(B(N2)(N3)) == 6);
 
 /**
- * Exponentiation, also called Thrush combinator
+ * Exponentiation, equivalent to the Thrush combinator
  * λnk.kn
  */
 auto POW = [](auto n) {
@@ -453,10 +457,17 @@ auto B1 = [](auto f) {
     };
   };
 };
-auto GT2 = B1(NOT)(LEQ);
-static_assert(eq(GT2(N1)(N3), F));
-static_assert(eq(GT2(N2)(N2), F));
-static_assert(eq(GT2(N3)(N1), T));
+
+namespace hidden {
+/**
+ * Greater than written in terms of B1
+ * composition of NOT and LEQ
+ */
+auto GT = B1(NOT)(LEQ);
+static_assert(eq(GT(N1)(N3), F));
+static_assert(eq(GT(N2)(N2), F));
+static_assert(eq(GT(N3)(N1), T));
+} // namespace hidden
 
 /**
  * Set the first element of a pair
