@@ -515,6 +515,36 @@ static_assert(to_int(FIB(N7)) == 13);
 static_assert(to_int(FIB(N8)) == 21);
 static_assert(to_int(FIB(N9)) == 34);
 
+/**
+ * Y combinator
+ * λf.(λx.f (x x)) (λx.f (x x))
+ * Unfortunately, this is not possible in C++ because of eager evaluation
+ */
+auto Y = [](auto f) {
+  return [=](auto x) {
+    return f(x(x));
+  }([=](auto x) {
+    return f(x(x));
+  });
+};
+
+/**
+ * Z combinator
+ * λf.(λx.f (λv.x x v)) (λx.f (λv.x x v))
+ * Unfortunately, this is not possible in C++ as well due to the type system
+ */
+auto Z = [](auto f) {
+  return [=](auto x) {
+    return f([=](auto v) {
+      return x(x)(v);
+    });
+  }([=](auto x) {
+    return f([=](auto v) {
+      return x(x)(v);
+    });
+  });
+};
+
 int main() {
 #define print_num(n) std::cout << #n " = " << to_int(n) << '\n'
 #define print_bool(b) std::cout << #b " = " << b('T')('F') << '\n'
