@@ -1,4 +1,4 @@
-# Lambda Calculus in C++
+# (Untyped) Lambda Calculus using C++ lambdas
 
 See [main.cpp](main.cpp): 
 
