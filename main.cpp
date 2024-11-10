@@ -2,10 +2,10 @@
 #include <type_traits>
 
 /**
- * Helper function to compare if two lambda functions are the same.
+ * Helper function to compare if two functions are the same.
  */
-auto eq = [](auto f, auto g) {
-  return std::is_same_v<decltype(f), decltype(g)>;
+auto eq = [](auto F, auto G) -> bool {
+  return std::is_same_v<decltype(F), decltype(G)>;
 };
 
 /**
@@ -188,10 +188,10 @@ static_assert(eq(N3(NOT)(F), T));
 /**
  * Helper functions to convert Church integers to C++ integers
  */
-auto succ = [](auto x) {
+auto succ = [](int x) -> int {
   return x + 1;
 };
-auto to_int = [](auto n) {
+auto to_int = [](auto n) -> int {
   return n(succ)(0);
 };
 static_assert(to_int(N0) == 0);
@@ -216,7 +216,6 @@ static_assert(to_int(SUCC(SUCC(SUCC(N0)))) == 3);
 auto N4 = SUCC(N3);
 static_assert(to_int(N4) == 4);
 
-namespace hidden { // used to avoid name collisions
 /**
  * Predecessor
  * λnfx.n (λgh.h (g f)) (λu.x) (λu.u)
@@ -235,7 +234,6 @@ auto PRED = [](auto n) {
 static_assert(to_int(PRED(N1)) == 0);
 static_assert(to_int(PRED(N2)) == 1);
 static_assert(to_int(PRED(N3)) == 2);
-} // namespace hidden
 
 /**
  * Bluebird combinator
@@ -251,19 +249,17 @@ auto B = [](auto f) {
 };
 static_assert(eq(B(NOT)(NOT)(T), T));
 
-namespace hidden {
 /**
  * Successor written in terms of B
  * λnf.Bf(nf)
  */
-auto SUCC = [](auto n) {
+auto SUCC2 = [](auto n) {
   return [=](auto f) {
     return B(f)(n(f));
   };
 };
-static_assert(to_int(SUCC(N0)) == 1);
-static_assert(to_int(SUCC(N3)) == 4);
-} // namespace hidden
+static_assert(to_int(SUCC2(N0)) == 1);
+static_assert(to_int(SUCC2(N3)) == 4);
 
 /**
  * Addition
@@ -380,12 +376,12 @@ static_assert(to_int(FST(N3(PHI)(PAIR(N0)(N0)))) == 2);
  * Predecessor written in terms of PHI
  * λn. FST (n PHI (PAIR N0 N0))
  */
-auto PRED = [](auto n) {
+auto PRED2 = [](auto n) {
   return FST(n(PHI)(PAIR(N0)(N0)));
 };
-static_assert(to_int(PRED(N1)) == 0);
-static_assert(to_int(PRED(N2)) == 1);
-static_assert(to_int(PRED(N3)) == 2);
+static_assert(to_int(PRED2(N1)) == 0);
+static_assert(to_int(PRED2(N2)) == 1);
+static_assert(to_int(PRED2(N3)) == 2);
 
 /**
  * Subtraction
@@ -458,16 +454,14 @@ auto B1 = [](auto f) {
   };
 };
 
-namespace hidden {
 /**
  * Greater than written in terms of B1
  * composition of NOT and LEQ
  */
-auto GT = B1(NOT)(LEQ);
-static_assert(eq(GT(N1)(N3), F));
-static_assert(eq(GT(N2)(N2), F));
-static_assert(eq(GT(N3)(N1), T));
-} // namespace hidden
+auto GT2 = B1(NOT)(LEQ);
+static_assert(eq(GT2(N1)(N3), F));
+static_assert(eq(GT2(N2)(N2), F));
+static_assert(eq(GT2(N3)(N1), T));
 
 /**
  * Set the first element of a pair
