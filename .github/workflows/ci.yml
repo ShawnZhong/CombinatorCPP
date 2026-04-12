@@ -1,21 +1,17 @@
-name: Test
+name: CI
 
 on:
   push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+  schedule:
+    - cron: '0 0 1 * *'
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
-
     - name: Build
       run: g++ main.cpp -o main
-
     - name: Run
       run: ./main

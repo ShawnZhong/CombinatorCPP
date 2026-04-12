@@ -1,4 +1,4 @@
-# Combinators in C++ lambdas
+# Combinatory logic in C++
 
 This repository implements combinators in C++. 
 See [main.cpp](main.cpp) for the complete implementation, which includes:
