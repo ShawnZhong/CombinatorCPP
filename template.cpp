@@ -347,15 +347,11 @@ static_assert(to_int<N9> == 9);
 
 // Check if n is zero
 // IS_ZERO n = n KF T
-template <typename N> struct IS_ZERO_curry;
-template <> struct IS_ZERO_curry<void> {
-  template <typename N> using of = typename IS_ZERO_curry<N>::of;
-};
-template <typename N> struct IS_ZERO_curry {
+struct IS_ZERO {
+  template <typename N>
   using of =
       typename N::template of<typename K::template of<F>>::template of<T>;
 };
-using IS_ZERO = IS_ZERO_curry<void>;
 static_assert(eq<IS_ZERO::of<N0>, T>);
 static_assert(eq<IS_ZERO::of<N1>, F>);
 static_assert(eq<IS_ZERO::of<N2>, F>);
@@ -383,58 +379,40 @@ using PAIR = V;
 
 // Extract first argument from a pair
 // FST p = p K
-template <typename P> struct FST_curry;
-template <> struct FST_curry<void> {
+struct FST {
   template <typename P> using of = typename P::template of<K>;
 };
-template <typename P> struct FST_curry {
-  using of = typename P::template of<K>;
-};
-using FST = FST_curry<void>;
 static_assert(eq<FST::of<PAIR::of<I>::of<M>>, I>);
 static_assert(eq<FST::of<PAIR::of<N2>::of<N3>>, N2>);
 
 // Extract second argument from a pair
 // SND p = p KI
-template <typename P> struct SND_curry;
-template <> struct SND_curry<void> {
+struct SND {
   template <typename P> using of = typename P::template of<KI>;
 };
-template <typename P> struct SND_curry {
-  using of = typename P::template of<KI>;
-};
-using SND = SND_curry<void>;
 static_assert(eq<SND::of<PAIR::of<I>::of<M>>, M>);
 static_assert(eq<SND::of<PAIR::of<N2>::of<N3>>, N3>);
 
 // Phi combinator
 // copy second argument to first argument and increment second argument
 // PHI p = PAIR (SND p) (SUCC (SND p))
-template <typename P> struct PHI_curry;
-template <> struct PHI_curry<void> {
-  template <typename P> using of = typename PHI_curry<P>::of;
-};
-template <typename P> struct PHI_curry {
+struct PHI {
+  template <typename P>
   using of =
       typename PAIR::template of<typename SND::template of<P>>::template of<
           typename SUCC::template of<typename SND::template of<P>>>;
 };
-using PHI = PHI_curry<void>;
 static_assert(to_int<FST::of<PHI::of<PAIR::of<N0>::of<N0>>>> == 0);
 static_assert(to_int<SND::of<PHI::of<PAIR::of<N0>::of<N0>>>> == 1);
 static_assert(to_int<FST::of<N3::of<PHI>::of<PAIR::of<N0>::of<N0>>>> == 2);
 
 // Predecessor written in terms of PHI
 // PRED n = FST (n PHI (PAIR N0 N0))
-template <typename N> struct PRED2_curry;
-template <> struct PRED2_curry<void> {
-  template <typename N> using of = typename PRED2_curry<N>::of;
-};
-template <typename N> struct PRED2_curry {
+struct PRED2 {
+  template <typename N>
   using of = typename FST::template of<typename N::template of<
       PHI>::template of<typename PAIR::template of<N0>::template of<N0>>>;
 };
-using PRED2 = PRED2_curry<void>;
 static_assert(to_int<PRED2::of<N1>> == 0);
 static_assert(to_int<PRED2::of<N2>> == 1);
 static_assert(to_int<PRED2::of<N3>> == 2);
@@ -573,15 +551,11 @@ template <typename F, typename A> struct FIB_helper_curry<F, A, void> {
       typename ADD::template of<A>::template of<B>>;
 };
 using FIB_helper = FIB_helper_curry<void, void, void>;
-template <typename N> struct FIB_curry;
-template <> struct FIB_curry<void> {
-  template <typename N> using of = typename FIB_curry<N>::of;
-};
-template <typename N> struct FIB_curry {
+struct FIB {
+  template <typename N>
   using of = typename N::template of<FIB_helper>::template of<K>::template of<
       N0>::template of<N1>;
 };
-using FIB = FIB_curry<void>;
 static_assert(to_int<FIB::of<N0>> == 0);
 static_assert(to_int<FIB::of<N1>> == 1);
 static_assert(to_int<FIB::of<N2>> == 1);
@@ -592,3 +566,15 @@ static_assert(to_int<FIB::of<N6>> == 8);
 static_assert(to_int<FIB::of<N7>> == 13);
 static_assert(to_int<FIB::of<N8>> == 21);
 static_assert(to_int<FIB::of<N9>> == 34);
+
+// Y combinator, the fixed point combinator
+// Y f x = f (Y f) x.
+template <typename F> struct Y_curry;
+template <> struct Y_curry<void> {
+  template <typename F> using of = Y_curry<F>;
+};
+template <typename F> struct Y_curry {
+  template <typename X>
+  using of = typename F::template of<Y_curry<F>>::template of<X>;
+};
+using Y = Y_curry<void>;
