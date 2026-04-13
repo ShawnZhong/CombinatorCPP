@@ -3,13 +3,12 @@
 template <typename F, typename X> using ap = typename F::template of<X>;
 
 // Helper to check if two terms are equal
-template <typename A, typename B> struct is_same {
+template <typename A, typename B> struct eq {
   static constexpr bool value = false;
 };
-template <typename T> struct is_same<T, T> {
+template <typename T> struct eq<T, T> {
   static constexpr bool value = true;
 };
-template <typename A, typename B> using eq = is_same<A, B>;
 
 // Identity combinator, aka idiot combinator
 // returns the argument unchanged
