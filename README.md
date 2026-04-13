@@ -3,9 +3,9 @@
 This repository explores combinatory logic in two C++ encodings:
 
 - [lambda.cpp](lambda.cpp): encoded as C++ 17 generic lambdas [[expr.prim.lambda]](https://eel.is/c++draft/expr.prim.lambda).
-- [template.cpp](template.cpp): encoded as C++ 11 template structs (or metafunctions) [[temp.class]](https://eel.is/c++draft/temp.class).
+- [template.cpp](template.cpp): encoded with C++ 11 template metaprogramming (i.e., metafunctions) [[temp.class]](https://eel.is/c++draft/temp.class).
 
-We make the following [Curry–Howard correspondence](https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence) among [Hilbert-style deduction systems](https://en.wikipedia.org/wiki/Hilbert_system), [combinatory logic](https://en.wikipedia.org/wiki/Combinatory_logic), and the two C++ encodings:
+We observe the [Curry–Howard correspondence](https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence) among [Hilbert-style deduction systems](https://en.wikipedia.org/wiki/Hilbert_system), [combinatory logic](https://en.wikipedia.org/wiki/Combinatory_logic), and the two C++ encodings:
 
 | Hilbert-style deduction | Combinatory logic | C++ lambda encoding | C++ template encoding |
 | --- | --- | --- | --- |
@@ -245,11 +245,28 @@ Build with `make` compiles
 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L536-L551 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L557-L569 |
 
 
-## References
+## Further Reading
+Combinatory Logic
+- Wikipedia: Combinatory Logic. [Link](https://en.wikipedia.org/wiki/Combinatory_logic)
 - A Flock of Functions: Combinators, Lambda Calculus, & Church Encodings in JS. [Code](https://github.com/glebec/lambda-talk) | [Website](https://glebec.github.io/lambda-talk/) | [Video](https://www.youtube.com/playlist?list=PLpkHU923F2XFWv-XfVuvWuxq41h21nOPK) | [Slides](https://speakerdeck.com/glebec/lambda-as-js-or-a-flock-of-functions-combinators-lambda-calculus-and-church-encodings-in-javascript)
 - To Mock a Mocking Bird: Including an Amazing Adventure in Combinatory Logic. [PDF](https://douxnet.weebly.com/uploads/2/0/4/1/20418601/raymond_m._smullyan-to_mock_a_mockingbird_and_other_logic_puzzles__including__an_amazing_adventure_in_combinatory_logic-knopf_1985.pdf) | [Wiki](https://en.wikipedia.org/wiki/To_Mock_a_Mockingbird)
+
+Curry–Howard correspondence
+- Wikipedia: Curry–Howard Correspondence. [Link](https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence)
 - Stanford Encyclopedia: Intuitionistic Type Theory. [Link](https://plato.stanford.edu/entries/type-theory-intuitionistic/)
 - Propositions as Types. [Paper](https://homepages.inf.ed.ac.uk/wadler/papers/propositions-as-types/propositions-as-types.pdf)
+
+C++ Metaprogramming
+- C++ Metafunctions. [Article](https://bietola.github.io/5mincode/2018/09/24/C++-metafunctions.html)
+- What is C++ metafunction and how to use it? [Article](https://iamsorush.com/posts/cpp-meta-function/)
+- Your own type predicate. [Article](https://akrzemi1.wordpress.com/2017/12/02/your-own-type-predicate/)
+- Expressive C++ Template Metaprogramming. [Article](https://www.fluentcpp.com/2017/06/02/write-template-metaprogramming-expressively/)
+- CppCon 2014: Walter E. Brown "Modern Template Metaprogramming: A Compendium". [Part 1 Video](https://www.youtube.com/watch?v=Am2is2QCvxY) | [Part 2 Video](https://www.youtube.com/watch?v=a0FliKwcwXE) | [Slides](https://github.com/CppCon/CppCon2014/blob/master/Presentations/Modern%20Template%20Metaprogramming%20-%20A%20Compendium/Modern%20Template%20Metaprogramming%20-%20A%20Compendium%20-%20Walter%20E%20Brown%20-%20CppCon%202014.pdf)
+
+Turing Completeness of C++ Templates
 - C++ Templates are Turing Complete. [Paper](https://rtraba.com/wp-content/uploads/2015/05/cppturing.pdf)
 - C++ templates: Creating a compile-time higher-order meta-programming language. [Article](https://matt.might.net/articles/c++-template-meta-programming-with-lambda-calculus/)
 - Translating Lambda Calculus into C++ Templates. [Paper](https://ksvi.mff.cuni.cz/~sefl/papers/lc_into_templates.pdf) | [Slides](https://www.lambdadays.org/static/upload/media/161672564665589vitsefltranslatinglambdacalculusintoctemplates.pdf)
+- [C++] is Turing Complete. [Article](https://blog.tal.bi/posts/cpp-syntax-tc/)
+- Template (Compile-time) Turing Machine in C++20. [Code](https://github.com/Eren121/CppTuringMachine/)
+- C++ Templates are turing complete - So why not make them usable in that way? [Code](https://github.com/197g/Functional-Cpp-Templates)
