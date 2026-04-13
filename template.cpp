@@ -202,7 +202,7 @@ struct succ {
   template <typename N> using of = nat<N::value + 1>;
 };
 template <typename N> struct to_nat {
-  static constexpr int value = N::template of<succ>::template of<nat<0>>::value;
+  static constexpr int value = ap<ap<N, succ>, nat<0>>::value;
 };
 static_assert(to_nat<N0>::value == 0, "N0 = 0");
 static_assert(to_nat<N1>::value == 1, "N1 = 1");
