@@ -515,20 +515,21 @@ static_assert(
     "SET_SND N3 (PAIR N1 N2) = 3");
 
 // Fibonacci numbers
-// FIB n = n FIB_helper K 0 1, where FIB_helper f a b = f b (ADD a b)
-struct FIB_helper {
-  template <typename F> struct with_f {
-    template <typename A> struct with_a {
-      template <typename B> using of = ap<ap<F, B>, ap<ap<ADD, A>, B>>;
+// FIB n = n step K 0 1, where step f a b = f b (ADD a b)
+struct FIB {
+  struct step {
+    template <typename F> struct with_f {
+      template <typename A> struct with_a {
+        template <typename B> using of = ap<ap<F, B>, ap<ap<ADD, A>, B>>;
+      };
+
+      template <typename A> using of = with_a<A>;
     };
 
-    template <typename A> using of = with_a<A>;
+    template <typename F> using of = with_f<F>;
   };
 
-  template <typename F> using of = with_f<F>;
-};
-struct FIB {
-  template <typename N> using of = ap<ap<ap<ap<N, FIB_helper>, K>, N0>, N1>;
+  template <typename N> using of = ap<ap<ap<ap<N, step>, K>, N0>, N1>;
 };
 static_assert(to_nat<FIB::of<N0>>::value == 0, "FIB N0 = 0");
 static_assert(to_nat<FIB::of<N1>>::value == 1, "FIB N1 = 1");
