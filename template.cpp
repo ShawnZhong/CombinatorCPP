@@ -1,11 +1,16 @@
-#include <type_traits>
-
-// Helper for internal application of combinators.
+// Helper for internal application of terms.
 // Public-facing code should prefer chained `::of<...>`.
 template <typename F, typename X> using ap = typename F::template of<X>;
 
 // Helper to check if two terms are equal
-template <typename A, typename B> using eq = std::is_same<A, B>;
+template <typename A, typename B> struct is_same {
+  static constexpr bool value = false;
+};
+template <typename T> struct is_same<T, T> {
+  static constexpr bool value = true;
+};
+
+template <typename A, typename B> using eq = is_same<A, B>;
 
 // Identity combinator, aka idiot combinator
 // returns the argument unchanged
@@ -33,8 +38,8 @@ struct K {
 
   template <typename A> using of = with_a<A>;
 };
-static_assert(eq<K::of<I>::of<M>, I>::value, "K I == I");
-static_assert(eq<K::of<M>::of<I>, M>::value, "K M == M");
+static_assert(eq<K::of<I>::of<M>, I>::value, "K I M== I");
+static_assert(eq<K::of<M>::of<I>, M>::value, "K M I == M");
 static_assert(eq<K::of<I>::of<M>::of<K>, K>::value, "K I M K== K");
 
 // Kite combinator, equivalent to K I and C K
@@ -64,9 +69,12 @@ struct C {
 
   template <typename F> using of = with_f<F>;
 };
-static_assert(eq<C::of<KI>::of<I>::of<M>, I>::value, "C(KI) = K");
-static_assert(eq<C::of<K>::of<I>::of<M>, M>::value, "C(K) = M");
-static_assert(eq<KI::of<I>::of<M>, M>::value, "KI = CK");
+// C KI == K
+static_assert(eq<K::of<I>::of<M>, I>::value, "K I M == I");
+static_assert(eq<C::of<KI>::of<I>::of<M>, I>::value, "C KI I M == I");
+// KI == C K
+static_assert(eq<C::of<K>::of<I>::of<M>, M>::value, "C K I M == M");
+static_assert(eq<KI::of<I>::of<M>, M>::value, "KI I M == M");
 
 // Church encoding of booleans
 // T T F = T
@@ -224,19 +232,19 @@ using N4 = SUCC::of<N3>;
 static_assert(to_nat<N4>::value == 4, "SUCC N3 = N4");
 
 // Predecessor
-// PRED n f x = n PRED_helper (K x) I, where PRED_helper f g = C I (g f)
-struct PRED_helper {
-  template <typename F> struct with_f {
-    template <typename G> using of = ap<ap<C, I>, ap<G, F>>;
+// PRED n f x = n shift (K x) I, where shift f g = C I (g f)
+struct PRED {
+  struct shift {
+    template <typename F> struct with_f {
+      template <typename G> using of = ap<ap<C, I>, ap<G, F>>;
+    };
+
+    template <typename F> using of = with_f<F>;
   };
 
-  template <typename F> using of = with_f<F>;
-};
-struct PRED {
   template <typename N> struct with_n {
     template <typename F> struct with_f {
-      template <typename X>
-      using of = ap<ap<ap<N, ap<PRED_helper, F>>, ap<K, X>>, I>;
+      template <typename X> using of = ap<ap<ap<N, ap<shift, F>>, ap<K, X>>, I>;
     };
 
     template <typename F> using of = with_f<F>;

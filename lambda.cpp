@@ -1,10 +1,14 @@
-#include <type_traits>
-
 /**
- * Helper function to compare if two functions are the same.
+ * Helper function to compare if two functions are of the same type
  */
+template <typename A, typename B> struct is_same {
+  static constexpr bool value = false;
+};
+template <typename T> struct is_same<T, T> {
+  static constexpr bool value = true;
+};
 auto eq = [](auto F, auto G) -> bool {
-  return std::is_same_v<decltype(F), decltype(G)>;
+  return is_same<decltype(F), decltype(G)>::value;
 };
 
 /**
@@ -15,7 +19,7 @@ auto eq = [](auto F, auto G) -> bool {
 auto I = [](auto a) {
   return a;
 };
-static_assert(eq(I(I), I));
+static_assert(eq(I(I), I), "I I == I");
 
 /**
  * Mockingbird combinator
@@ -25,7 +29,7 @@ static_assert(eq(I(I), I));
 auto M = [](auto f) {
   return f(f);
 };
-static_assert(eq(M(I), I));
+static_assert(eq(M(I), I), "M I == I");
 
 /**
  * Kestrel combinator, aka constant combinator
@@ -37,9 +41,9 @@ auto K = [](auto a) {
     return a;
   };
 };
-static_assert(eq(K(I)(M), I));
-static_assert(eq(K(M)(I), M));
-static_assert(eq(K(I)(M)(K), K));
+static_assert(eq(K(I)(M), I), "K I M == I");
+static_assert(eq(K(M)(I), M), "K M I == M");
+static_assert(eq(K(I)(M)(K), K), "K I M K == K");
 
 /**
  * Kite combinator, equivalent to K(I) and C(K)
@@ -51,8 +55,8 @@ auto KI = [](auto a) {
     return b;
   };
 };
-static_assert(eq(KI(M)(K), K));
-static_assert(eq(KI(K)(M), M));
+static_assert(eq(KI(M)(K), K), "KI M K == K");
+static_assert(eq(KI(K)(M), M), "KI K M == M");
 
 /**
  * Cardinal combinator, aka flip combinator
@@ -66,19 +70,22 @@ auto C = [](auto f) {
     };
   };
 };
-static_assert(eq(C(KI)(I)(M), I)); // C(KI) = K
-static_assert(eq(C(K)(I)(M), M));
-static_assert(eq(KI(I)(M), M)); // KI = CK
+// C KI == K
+static_assert(eq(K(I)(M), I), "K I M == I");
+static_assert(eq(C(KI)(I)(M), I), "C KI I M == I");
+// KI == C K
+static_assert(eq(C(K)(I)(M), M), "C K I M == M");
+static_assert(eq(KI(I)(M), M), "KI I M == M");
 
 /**
  * Church encoding of booleans
- * T(T)(F) = T
- * F(T)(F) = F
+ * T T F = T
+ * F T F = F
  */
 auto T = K;
-auto F = KI; // = CK
-static_assert(eq(T(T)(F), T));
-static_assert(eq(F(T)(F), F));
+auto F = KI; // == C K
+static_assert(eq(T(T)(F), T), "T T F == T");
+static_assert(eq(F(T)(F), F), "F T F == F");
 
 /**
  * Negation, equivalent to C
@@ -87,10 +94,10 @@ static_assert(eq(F(T)(F), F));
 auto NOT = [](auto p) {
   return p(F)(T);
 };
-static_assert(eq(NOT(T), F));
-static_assert(eq(NOT(F), T));
-static_assert(eq(C(T)(T)(F), F));
-static_assert(eq(C(F)(T)(F), T));
+static_assert(eq(NOT(T), F), "NOT T == F");
+static_assert(eq(NOT(F), T), "NOT F == T");
+static_assert(eq(C(T)(T)(F), F), "C(T) T F == F");
+static_assert(eq(C(F)(T)(F), T), "C(F) T F == T");
 
 /**
  * Conjunction
@@ -102,10 +109,10 @@ auto AND = [](auto p) {
     return p(q)(p);
   };
 };
-static_assert(eq(AND(T)(T), T));
-static_assert(eq(AND(T)(F), F));
-static_assert(eq(AND(F)(T), F));
-static_assert(eq(AND(F)(F), F));
+static_assert(eq(AND(T)(T), T), "AND T T == T");
+static_assert(eq(AND(T)(F), F), "AND T F == F");
+static_assert(eq(AND(F)(T), F), "AND F T == F");
+static_assert(eq(AND(F)(F), F), "AND F F == F");
 
 /**
  * Disjunction, equivalent to M*
@@ -117,10 +124,10 @@ auto OR = [](auto p) {
     return p(p)(q);
   };
 };
-static_assert(eq(OR(T)(T), T));
-static_assert(eq(OR(T)(F), T));
-static_assert(eq(OR(F)(T), T));
-static_assert(eq(OR(F)(F), F));
+static_assert(eq(OR(T)(T), T), "OR T T == T");
+static_assert(eq(OR(T)(F), T), "OR T F == T");
+static_assert(eq(OR(F)(T), T), "OR F T == T");
+static_assert(eq(OR(F)(F), F), "OR F F == F");
 
 /**
  * Boolean equality
@@ -131,10 +138,10 @@ auto BEQ = [](auto p) {
     return p(q)(NOT(q));
   };
 };
-static_assert(eq(BEQ(T)(T), T));
-static_assert(eq(BEQ(T)(F), F));
-static_assert(eq(BEQ(F)(T), F));
-static_assert(eq(BEQ(F)(F), T));
+static_assert(eq(BEQ(T)(T), T), "BEQ T T == T");
+static_assert(eq(BEQ(T)(F), F), "BEQ T F == F");
+static_assert(eq(BEQ(F)(T), F), "BEQ F T == F");
+static_assert(eq(BEQ(F)(F), T), "BEQ F F == T");
 
 /**
  * Boolean exclusive disjunction
@@ -145,10 +152,10 @@ auto XOR = [](auto p) {
     return p(NOT(q))(q);
   };
 };
-static_assert(eq(XOR(T)(T), F));
-static_assert(eq(XOR(T)(F), T));
-static_assert(eq(XOR(F)(T), T));
-static_assert(eq(XOR(F)(F), F));
+static_assert(eq(XOR(T)(T), F), "XOR T T == F");
+static_assert(eq(XOR(T)(F), T), "XOR T F == T");
+static_assert(eq(XOR(F)(T), T), "XOR F T == T");
+static_assert(eq(XOR(F)(F), F), "XOR F F == F");
 
 /**
  * Church encoding of integers
@@ -179,10 +186,10 @@ auto N3 = [](auto f) {
     return f(f(f(x)));
   };
 };
-static_assert(eq(N0(NOT)(F), F));
-static_assert(eq(N1(NOT)(F), T));
-static_assert(eq(N2(NOT)(F), F));
-static_assert(eq(N3(NOT)(F), T));
+static_assert(eq(N0(NOT)(F), F), "N0 NOT F == F");
+static_assert(eq(N1(NOT)(F), T), "N1 NOT F == T");
+static_assert(eq(N2(NOT)(F), F), "N2 NOT F == F");
+static_assert(eq(N3(NOT)(F), T), "N3 NOT F == T");
 
 /**
  * Helper functions to convert Church integers to C++ integers
@@ -190,13 +197,13 @@ static_assert(eq(N3(NOT)(F), T));
 auto succ = [](int x) -> int {
   return x + 1;
 };
-auto to_int = [](auto n) -> int {
+auto nat = [](auto n) -> int {
   return n(succ)(0);
 };
-static_assert(to_int(N0) == 0);
-static_assert(to_int(N1) == 1);
-static_assert(to_int(N2) == 2);
-static_assert(to_int(N3) == 3);
+static_assert(nat(N0) == 0, "N0 = 0");
+static_assert(nat(N1) == 1, "N1 = 1");
+static_assert(nat(N2) == 2, "N2 = 2");
+static_assert(nat(N3) == 3, "N3 = 3");
 
 /**
  * Successor
@@ -209,11 +216,11 @@ auto SUCC = [](auto n) {
     };
   };
 };
-static_assert(to_int(SUCC(N0)) == 1);
-static_assert(to_int(SUCC(SUCC(N0))) == 2);
-static_assert(to_int(SUCC(SUCC(SUCC(N0)))) == 3);
+static_assert(nat(SUCC(N0)) == 1, "SUCC N0 = 1");
+static_assert(nat(SUCC(SUCC(N0))) == 2, "SUCC SUCC N0 = 2");
+static_assert(nat(SUCC(SUCC(SUCC(N0)))) == 3, "SUCC SUCC SUCC N0 = 3");
 auto N4 = SUCC(N3);
-static_assert(to_int(N4) == 4);
+static_assert(nat(N4) == 4, "N4 = 4");
 
 /**
  * Predecessor
@@ -230,9 +237,9 @@ auto PRED = [](auto n) {
     };
   };
 };
-static_assert(to_int(PRED(N1)) == 0);
-static_assert(to_int(PRED(N2)) == 1);
-static_assert(to_int(PRED(N3)) == 2);
+static_assert(nat(PRED(N1)) == 0, "PRED N1 = 0");
+static_assert(nat(PRED(N2)) == 1, "PRED N2 = 1");
+static_assert(nat(PRED(N3)) == 2, "PRED N3 = 2");
 
 /**
  * Bluebird combinator
@@ -246,7 +253,7 @@ auto B = [](auto f) {
     };
   };
 };
-static_assert(eq(B(NOT)(NOT)(T), T));
+static_assert(eq(B(NOT)(NOT)(T), T), "B(NOT) NOT T == T");
 
 /**
  * Successor written in terms of B
@@ -257,8 +264,8 @@ auto SUCC2 = [](auto n) {
     return B(f)(n(f));
   };
 };
-static_assert(to_int(SUCC2(N0)) == 1);
-static_assert(to_int(SUCC2(N3)) == 4);
+static_assert(nat(SUCC2(N0)) == 1, "SUCC2 N0 = 1");
+static_assert(nat(SUCC2(N3)) == 4, "SUCC2 N3 = 4");
 
 /**
  * Addition
@@ -271,7 +278,7 @@ auto ADD = [](auto n) {
   };
 };
 auto N5 = ADD(N2)(N3);
-static_assert(to_int(N5) == 5);
+static_assert(nat(N5) == 5, "ADD N2 N3 = 5");
 
 /**
  * Multiplication, equivalent to B
@@ -286,9 +293,9 @@ auto MUL = [](auto n) {
 };
 auto N6 = MUL(N2)(N3);
 auto N7 = ADD(MUL(N2)(N2))(MUL(N1)(N3));
-static_assert(to_int(N6) == 6);
-static_assert(to_int(N7) == 7);
-static_assert(to_int(B(N2)(N3)) == 6);
+static_assert(nat(N6) == 6, "MUL N2 N3 = 6");
+static_assert(nat(N7) == 7, "ADD MUL N2 N2 MUL N1 N3 = 7");
+static_assert(nat(B(N2)(N3)) == 6, "B N2 N3 = 6");
 
 /**
  * Exponentiation, equivalent to the Thrush combinator
@@ -302,9 +309,9 @@ auto POW = [](auto n) {
 auto Th = POW;
 auto N8 = POW(N2)(N3);
 auto N9 = Th(N3)(N2);
-static_assert(to_int(N8) == 8);
-static_assert(to_int(N9) == 9);
-static_assert(to_int(POW(N3)(N4)) == 81);
+static_assert(nat(N8) == 8, "POW N2 N3 = 8");
+static_assert(nat(N9) == 9, "Th N3 N2 = 9");
+static_assert(nat(POW(N3)(N4)) == 81, "POW N3 N4 = 81");
 
 /**
  * Check if n is zero
@@ -314,9 +321,9 @@ static_assert(to_int(POW(N3)(N4)) == 81);
 auto IS_ZERO = [](auto n) {
   return n(K(F))(T);
 };
-static_assert(eq(IS_ZERO(N0), T));
-static_assert(eq(IS_ZERO(N1), F));
-static_assert(eq(IS_ZERO(N2), F));
+static_assert(eq(IS_ZERO(N0), T), "IS_ZERO N0 = T");
+static_assert(eq(IS_ZERO(N1), F), "IS_ZERO N1 = F");
+static_assert(eq(IS_ZERO(N2), F), "IS_ZERO N2 = F");
 
 /**
  * Vireo combinator, equivalent to BCT
@@ -331,9 +338,9 @@ auto V = [](auto a) {
     };
   };
 };
-static_assert(to_int(V(N2)(N3)(ADD)) == 5);
-static_assert(eq(V(I)(M)(K), I));
-static_assert(eq(V(I)(M)(KI), M));
+static_assert(nat(V(N2)(N3)(ADD)) == 5, "V N2 N3 ADD = 5");
+static_assert(eq(V(I)(M)(K), I), "V I M K = I");
+static_assert(eq(V(I)(M)(KI), M), "V I M KI = M");
 
 /**
  * Church encoding of pairs, equivalent to V
@@ -347,8 +354,8 @@ auto PAIR = V;
 auto FST = [](auto p) {
   return p(K);
 };
-static_assert(eq(FST(PAIR(I)(M)), I));
-static_assert(eq(FST(PAIR(N2)(N3)), N2));
+static_assert(eq(FST(PAIR(I)(M)), I), "FST PAIR I M = I");
+static_assert(eq(FST(PAIR(N2)(N3)), N2), "FST PAIR N2 N3 = N2");
 
 /**
  * Extract second argument from a pair
@@ -357,8 +364,8 @@ static_assert(eq(FST(PAIR(N2)(N3)), N2));
 auto SND = [](auto p) {
   return p(KI);
 };
-static_assert(eq(SND(PAIR(I)(M)), M));
-static_assert(eq(SND(PAIR(N2)(N3)), N3));
+static_assert(eq(SND(PAIR(I)(M)), M), "SND PAIR I M = M");
+static_assert(eq(SND(PAIR(N2)(N3)), N3), "SND PAIR N2 N3 = N3");
 
 /**
  * Phi combinator
@@ -368,9 +375,10 @@ static_assert(eq(SND(PAIR(N2)(N3)), N3));
 auto PHI = [](auto p) {
   return V(SND(p))(SUCC(SND(p)));
 };
-static_assert(to_int(FST(PHI(PAIR(N0)(N0)))) == 0);
-static_assert(to_int(SND(PHI(PAIR(N0)(N0)))) == 1);
-static_assert(to_int(FST(N3(PHI)(PAIR(N0)(N0)))) == 2);
+static_assert(nat(FST(PHI(PAIR(N0)(N0)))) == 0, "FST PHI PAIR N0 N0 = 0");
+static_assert(nat(SND(PHI(PAIR(N0)(N0)))) == 1, "SND PHI PAIR N0 N0 = 1");
+static_assert(nat(FST(N3(PHI)(PAIR(N0)(N0)))) == 2,
+              "FST N3 PHI PAIR N0 N0 = 2");
 
 /**
  * Predecessor written in terms of PHI
@@ -379,9 +387,9 @@ static_assert(to_int(FST(N3(PHI)(PAIR(N0)(N0)))) == 2);
 auto PRED2 = [](auto n) {
   return FST(n(PHI)(PAIR(N0)(N0)));
 };
-static_assert(to_int(PRED2(N1)) == 0);
-static_assert(to_int(PRED2(N2)) == 1);
-static_assert(to_int(PRED2(N3)) == 2);
+static_assert(nat(PRED2(N1)) == 0, "PRED2 N1 = 0");
+static_assert(nat(PRED2(N2)) == 1, "PRED2 N2 = 1");
+static_assert(nat(PRED2(N3)) == 2, "PRED2 N3 = 2");
 
 /**
  * Subtraction
@@ -393,10 +401,10 @@ auto SUB = [](auto n) {
     return k(PRED)(n);
   };
 };
-static_assert(to_int(SUB(N0)(N0)) == 0);
-static_assert(to_int(SUB(N3)(N1)) == 2);
-static_assert(to_int(SUB(N3)(N2)) == 1);
-static_assert(to_int(SUB(N9)(N2)) == 7);
+static_assert(nat(SUB(N0)(N0)) == 0, "SUB N0 N0 = 0");
+static_assert(nat(SUB(N3)(N1)) == 2, "SUB N3 N1 = 2");
+static_assert(nat(SUB(N3)(N2)) == 1, "SUB N3 N2 = 1");
+static_assert(nat(SUB(N9)(N2)) == 7, "SUB N9 N2 = 7");
 
 /**
  * Less than or equal
@@ -408,9 +416,9 @@ auto LEQ = [](auto n) {
     return IS_ZERO(SUB(n)(k));
   };
 };
-static_assert(eq(LEQ(N1)(N3), T));
-static_assert(eq(LEQ(N2)(N2), T));
-static_assert(eq(LEQ(N3)(N1), F));
+static_assert(eq(LEQ(N1)(N3), T), "LEQ N1 N3 = T");
+static_assert(eq(LEQ(N2)(N2), T), "LEQ N2 N2 = T");
+static_assert(eq(LEQ(N3)(N1), F), "LEQ N3 N1 = F");
 
 /**
  * Equality
@@ -422,9 +430,9 @@ auto EQ = [](auto n) {
     return AND(LEQ(n)(k))(LEQ(k)(n));
   };
 };
-static_assert(eq(EQ(N1)(N3), F));
-static_assert(eq(EQ(N2)(N2), T));
-static_assert(eq(EQ(N3)(N1), F));
+static_assert(eq(EQ(N1)(N3), F), "EQ N1 N3 = F");
+static_assert(eq(EQ(N2)(N2), T), "EQ N2 N2 = T");
+static_assert(eq(EQ(N3)(N1), F), "EQ N3 N1 = F");
 
 /**
  * Greater than
@@ -436,9 +444,9 @@ auto GT = [](auto n) {
     return NOT(LEQ(n)(k));
   };
 };
-static_assert(eq(GT(N1)(N3), F));
-static_assert(eq(GT(N2)(N2), F));
-static_assert(eq(GT(N3)(N1), T));
+static_assert(eq(GT(N1)(N3), F), "GT N1 N3 = F");
+static_assert(eq(GT(N2)(N2), F), "GT N2 N2 = F");
+static_assert(eq(GT(N3)(N1), T), "GT N3 N1 = T");
 
 /**
  * Blackbird combinator, equivalent to BBB
@@ -460,9 +468,9 @@ auto B1 = [](auto f) {
  * composition of NOT and LEQ
  */
 auto GT2 = B1(NOT)(LEQ);
-static_assert(eq(GT2(N1)(N3), F));
-static_assert(eq(GT2(N2)(N2), F));
-static_assert(eq(GT2(N3)(N1), T));
+static_assert(eq(GT2(N1)(N3), F), "GT2 N1 N3 = F");
+static_assert(eq(GT2(N2)(N2), F), "GT2 N2 N2 = F");
+static_assert(eq(GT2(N3)(N1), T), "GT2 N3 N1 = T");
 
 /**
  * Set the first element of a pair
@@ -473,7 +481,8 @@ auto SET_FST = [](auto x) {
     return PAIR(x)(SND(p));
   };
 };
-static_assert(to_int(FST(SET_FST(N3)(PAIR(N1)(N2)))) == 3);
+static_assert(nat(FST(SET_FST(N3)(PAIR(N1)(N2)))) == 3,
+              "FST SET_FST N3 PAIR N1 N2 = 3");
 
 /**
  * Set the second element of a pair
@@ -484,7 +493,8 @@ auto SET_SND = [](auto x) {
     return PAIR(FST(p))(x);
   };
 };
-static_assert(to_int(SND(SET_SND(N3)(PAIR(N1)(N2)))) == 3);
+static_assert(nat(SND(SET_SND(N3)(PAIR(N1)(N2)))) == 3,
+              "SND SET_SND N3 PAIR N1 N2 = 3");
 
 /**
  * Fibonacci function
@@ -499,16 +509,16 @@ auto FIB = [](auto n) {
     };
   })(K)(N0)(N1);
 };
-static_assert(to_int(FIB(N0)) == 0);
-static_assert(to_int(FIB(N1)) == 1);
-static_assert(to_int(FIB(N2)) == 1);
-static_assert(to_int(FIB(N3)) == 2);
-static_assert(to_int(FIB(N4)) == 3);
-static_assert(to_int(FIB(N5)) == 5);
-static_assert(to_int(FIB(N6)) == 8);
-static_assert(to_int(FIB(N7)) == 13);
-static_assert(to_int(FIB(N8)) == 21);
-static_assert(to_int(FIB(N9)) == 34);
+static_assert(nat(FIB(N0)) == 0, "FIB N0 = 0");
+static_assert(nat(FIB(N1)) == 1, "FIB N1 = 1");
+static_assert(nat(FIB(N2)) == 1, "FIB N2 = 1");
+static_assert(nat(FIB(N3)) == 2, "FIB N3 = 2");
+static_assert(nat(FIB(N4)) == 3, "FIB N4 = 3");
+static_assert(nat(FIB(N5)) == 5, "FIB N5 = 5");
+static_assert(nat(FIB(N6)) == 8, "FIB N6 = 8");
+static_assert(nat(FIB(N7)) == 13, "FIB N7 = 13");
+static_assert(nat(FIB(N8)) == 21, "FIB N8 = 21");
+static_assert(nat(FIB(N9)) == 34, "FIB N9 = 34");
 
 /**
  * Y combinator
@@ -539,4 +549,3 @@ auto Z = [](auto f) {
     });
   });
 };
-

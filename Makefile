@@ -1,12 +1,8 @@
-CXX = c++
+.PHONY: all clean
 
-all: lambda.o template.o
-
-lambda.o: lambda.cpp
-	$(CXX) -std=c++17 -c $< -o $@
-
-template.o: template.cpp
-	$(CXX) -std=c++11 -c $< -o $@
+all:
+	c++ -std=c++17 -c lambda.cpp -o lambda.o
+	c++ -std=c++11 -c template.cpp -o template.o
 
 clean:
-	rm -f lambda.o template.o
+	rm -f *.o
