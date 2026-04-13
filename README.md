@@ -2,10 +2,10 @@
 
 This repository explores combinatory logic in two C++ encodings:
 
-- [lambda.cpp](lambda.cpp): terms encoded with C++ 17 generic lambdas [[expr.prim.lambda]](https://eel.is/c++draft/expr.prim.lambda).
-- [template.cpp](template.cpp): terms encoded with C++ 11 template metaprogramming as structs [[temp.class]](https://eel.is/c++draft/temp.class).
+- [lambda.cpp](lambda.cpp): encoded as C++ 17 generic lambdas [[expr.prim.lambda]](https://eel.is/c++draft/expr.prim.lambda).
+- [template.cpp](template.cpp): encoded as C++ 11 template structs (or metafunctions) [[temp.class]](https://eel.is/c++draft/temp.class).
 
-We make the following [Curry–Howard correspondence](https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence) among a [Hilbert-style deduction system](https://en.wikipedia.org/wiki/Hilbert_system), [combinatory logic](https://en.wikipedia.org/wiki/Combinatory_logic), and the two C++ encodings:
+We make the following [Curry–Howard correspondence](https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence) among [Hilbert-style deduction systems](https://en.wikipedia.org/wiki/Hilbert_system), [combinatory logic](https://en.wikipedia.org/wiki/Combinatory_logic), and the two C++ encodings:
 
 | Hilbert-style deduction | Combinatory logic | C++ lambda encoding | C++ template encoding |
 | --- | --- | --- | --- |
