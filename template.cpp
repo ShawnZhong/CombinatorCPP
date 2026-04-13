@@ -366,17 +366,7 @@ static_assert(eq<V::of<I>::of<M>::of<K>::of<I>, I>::value, "V I M K I = I");
 static_assert(eq<V::of<I>::of<M>::of<K>::of<M>, M>::value, "V I M K M = M");
 
 // Church encoding of pairs
-struct PAIR {
-  template <typename A> struct with_a {
-    template <typename B> struct with_b {
-      template <typename F> using of = ap<ap<F, A>, B>;
-    };
-
-    template <typename B> using of = with_b<B>;
-  };
-
-  template <typename A> using of = with_a<A>;
-};
+using PAIR = V;
 
 // Extract first argument from a pair
 // FST p = p K

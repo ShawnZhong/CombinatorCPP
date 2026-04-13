@@ -15,6 +15,13 @@ We make the following [Curry–Howard correspondence](https://en.wikipedia.org/w
 | modus ponens | combinator application (`F X`) | lambda application (`F(X)`) | template application (`ap<F, X>` or `F::of<X>`) |
 | normalization | combinator reduction | lambda evaluation | template instantiation |
 
+## Getting Started
+
+Build with `make` compiles
+
+- `lambda.cpp` with `-std=c++17`
+- `template.cpp` with `-std=c++11`
+
 ## Constructs
 
 ### Basic Combinators
@@ -23,31 +30,31 @@ We make the following [Curry–Howard correspondence](https://en.wikipedia.org/w
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L14-L22 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L18-L25 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L14-L22 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L15-L21 |
 
 `M`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L24-L32 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L26-L33 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L24-L32 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L23-L29 |
 
 `K`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L34-L46 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L34-L47 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L34-L46 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L31-L43 |
 
 `KI`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L48-L59 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L48-L60 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L48-L59 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L45-L56 |
 
 `C`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L61-L78 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L61-L81 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L61-L78 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L58-L77 |
 
 ### Church Booleans
 
@@ -55,37 +62,37 @@ We make the following [Curry–Howard correspondence](https://en.wikipedia.org/w
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L80-L88 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L82-L82 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L80-L88 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L79-L85 |
 
 `NOT`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L90-L100 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L89-L98 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L90-L100 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L87-L95 |
 
 `AND`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L102-L115 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L99-L113 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L102-L115 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L97-L110 |
 
 `OR`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L117-L130 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L114-L128 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L117-L130 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L112-L125 |
 
 `BEQ`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L132-L144 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L129-L142 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L132-L144 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L127-L139 |
 
 `XOR`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L146-L158 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L143-L158 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L146-L158 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L141-L153 |
 
 ### Church Numerals and Arithmetic
 
@@ -93,49 +100,49 @@ We make the following [Curry–Howard correspondence](https://en.wikipedia.org/w
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L208-L223 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L216-L230 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L208-L223 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L214-L232 |
 
 `PRED`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L225-L242 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L236-L261 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L225-L242 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L234-L257 |
 
 `B`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L244-L256 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L262-L276 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L244-L256 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L259-L273 |
 
 `SUCC2`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L258-L268 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L277-L292 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L258-L268 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L275-L289 |
 
 `ADD`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L270-L281 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L293-L299 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L270-L281 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L291-L301 |
 
 `MUL`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L283-L298 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L305-L315 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L283-L298 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L303-L320 |
 
 `POW`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L300-L314 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L324-L334 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L300-L314 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L322-L338 |
 
 `IS_ZERO`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L316-L326 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L342-L351 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L316-L326 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L340-L347 |
 
 ### Pairs and Comparisons
 
@@ -143,79 +150,79 @@ We make the following [Curry–Howard correspondence](https://en.wikipedia.org/w
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L328-L348 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L352-L368 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L328-L348 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L349-L369 |
 
 `FST`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L350-L358 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L383-L391 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L350-L358 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L371-L378 |
 
 `SND`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L360-L368 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L392-L401 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L360-L368 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L380-L387 |
 
 `PHI`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L370-L381 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L402-L415 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L370-L381 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L389-L402 |
 
 `PRED2`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L384-L392 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L416-L425 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L384-L392 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L404-L412 |
 
 `SUB`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L394-L407 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L426-L438 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L394-L407 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L414-L425 |
 
 `LEQ`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L409-L421 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L439-L451 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L409-L421 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L427-L438 |
 
 `EQ`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L423-L435 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L452-L465 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L423-L435 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L440-L452 |
 
 `GT`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L437-L449 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L466-L479 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L437-L449 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L454-L465 |
 
 `B1`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L451-L464 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L480-L497 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L451-L464 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L467-L484 |
 
 `GT2`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L466-L473 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L498-L504 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L466-L473 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L486-L491 |
 
 `SET_FST`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L475-L485 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L505-L517 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L475-L485 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L493-L504 |
 
 `SET_SND`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L487-L497 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L518-L541 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L487-L497 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L506-L517 |
 
 ### Fibonacci and Fixed-Point Combinators
 
@@ -223,26 +230,20 @@ We make the following [Curry–Howard correspondence](https://en.wikipedia.org/w
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L499-L521 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L542-L558 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L499-L521 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L519-L544 |
 
 `Y`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L523-L534 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L559-L569 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L523-L534 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L546-L555 |
 
 `Z`
 
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L536-L551 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L570-L580 |
+| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/lambda.cpp#L536-L551 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/18128901ff06f4e8e430e8e7c951ad5da17c1825/template.cpp#L557-L569 |
 
-## Build
-
-Build with `make` compiles
-
-- `lambda.cpp` with `-std=c++17`
-- `template.cpp` with `-std=c++11`
 
 ## References
 - A Flock of Functions: Combinators, Lambda Calculus, & Church Encodings in JS. [Code](https://github.com/glebec/lambda-talk) | [Website](https://glebec.github.io/lambda-talk/)
