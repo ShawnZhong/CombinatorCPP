@@ -1,2 +1,9 @@
+If:
+  PathMatch: main.cpp
 CompileFlags:
   Add: [-std=c++17]
+---
+If:
+  PathMatch: template.cpp
+CompileFlags:
+  Add: [-std=c++11]
