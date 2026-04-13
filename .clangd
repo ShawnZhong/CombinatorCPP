@@ -1,5 +1,5 @@
 If:
-  PathMatch: main.cpp
+  PathMatch: lambda.cpp
 CompileFlags:
   Add: [-std=c++17]
 ---

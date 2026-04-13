@@ -1,4 +1,3 @@
-#include <iostream>
 #include <type_traits>
 
 /**
@@ -305,6 +304,7 @@ auto N8 = POW(N2)(N3);
 auto N9 = Th(N3)(N2);
 static_assert(to_int(N8) == 8);
 static_assert(to_int(N9) == 9);
+static_assert(to_int(POW(N3)(N4)) == 81);
 
 /**
  * Check if n is zero
@@ -396,6 +396,7 @@ auto SUB = [](auto n) {
 static_assert(to_int(SUB(N0)(N0)) == 0);
 static_assert(to_int(SUB(N3)(N1)) == 2);
 static_assert(to_int(SUB(N3)(N2)) == 1);
+static_assert(to_int(SUB(N9)(N2)) == 7);
 
 /**
  * Less than or equal
@@ -539,31 +540,3 @@ auto Z = [](auto f) {
   });
 };
 
-int main() {
-#define print_num(n) std::cout << #n " = " << to_int(n) << '\n'
-#define print_bool(b) std::cout << #b " = " << b('T')('F') << '\n'
-
-  print_bool(T);
-  print_bool(F);
-
-  print_bool(AND(T)(F));
-
-  print_bool(OR(T)(T));
-
-  print_bool(BEQ(F)(F));
-
-  print_num(ADD(N3)(N2));
-  print_num(MUL(N3)(N2));
-  print_num(POW(N3)(N4));
-
-  print_bool(IS_ZERO(N0));
-  print_bool(IS_ZERO(SUCC(N0)));
-
-  print_num(PRED(N3));
-  print_num(SUB(POW(N3)(N2))(N2));
-
-  print_num(FIB(N9));
-
-#undef print_num
-#undef print_bool
-}

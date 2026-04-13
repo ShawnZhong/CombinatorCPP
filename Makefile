@@ -1,12 +1,12 @@
 CXX = c++
 
-all: main template
+all: lambda.o template.o
 
-main: main.cpp
-	$(CXX) -std=c++17 $< -o $@
+lambda.o: lambda.cpp
+	$(CXX) -std=c++17 -c $< -o $@
 
-template: template.cpp
+template.o: template.cpp
 	$(CXX) -std=c++11 -c $< -o $@
 
 clean:
-	rm -f main template
+	rm -f lambda.o template.o

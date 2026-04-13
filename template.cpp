@@ -35,7 +35,7 @@ struct K {
 };
 static_assert(eq<K::of<I>::of<M>, I>::value, "K I == I");
 static_assert(eq<K::of<M>::of<I>, M>::value, "K M == M");
-static_assert(eq<K::of<I>::of<M>::of<K>, K>::value, "K I == K");
+static_assert(eq<K::of<I>::of<M>::of<K>, K>::value, "K I M K== K");
 
 // Kite combinator, equivalent to K I and C K
 // returns the second argument unchanged
@@ -47,8 +47,8 @@ struct KI {
 
   template <typename A> using of = with_a<A>;
 };
-static_assert(eq<KI::of<M>::of<K>, K>::value, "KI M == K");
-static_assert(eq<KI::of<K>::of<M>, M>::value, "KI K == M");
+static_assert(eq<KI::of<M>::of<K>, K>::value, "KI M K== K");
+static_assert(eq<KI::of<K>::of<M>, M>::value, "KI K M== M");
 
 // Cardinal combinator, aka flip combinator
 // reverses the arguments
@@ -545,12 +545,28 @@ static_assert(to_nat<FIB::of<N7>>::value == 13, "FIB N7 = 13");
 static_assert(to_nat<FIB::of<N8>>::value == 21, "FIB N8 = 21");
 static_assert(to_nat<FIB::of<N9>>::value == 34, "FIB N9 = 34");
 
-// Y combinator, the typed fixed-point operator
-// Y f x = f (Y f) x
+// Direct syntactic translation of:
+// Y = λf.(λx.f (x x)) (λx.f (x x))
+// This mirrors the lambda term, but is not intended for eager evaluation.
 struct Y {
-  template <typename F> struct with_f {
-    template <typename X> using of = ap<ap<F, Y::template with_f<F>>, X>;
+  template <typename F> struct self_apply {
+    template <typename X> using of = ap<F, ap<X, X>>;
   };
 
-  template <typename F> using of = with_f<F>;
+  template <typename F> using of = ap<self_apply<F>, self_apply<F>>;
+};
+
+// Direct syntactic translation of:
+// Z = λf.(λx.f (λv.x x v)) (λx.f (λv.x x v))
+// This mirrors the lambda term, but is not intended for eager evaluation.
+struct Z {
+  template <typename F> struct self_apply {
+    template <typename X> struct delayed_self_apply {
+      template <typename V> using of = ap<ap<X, X>, V>;
+    };
+
+    template <typename X> using of = ap<F, delayed_self_apply<X>>;
+  };
+
+  template <typename F> using of = ap<self_apply<F>, self_apply<F>>;
 };
