@@ -9,10 +9,10 @@ We make the following [Curry–Howard correspondence](https://en.wikipedia.org/w
 
 | Hilbert-style deduction | Combinatory logic | C++ lambda encoding | C++ template encoding |
 | --- | --- | --- | --- |
-| formula | combinator type (`A -> A`) | type of lambda (`decltype([](auto a) {  return a; })`) | struct (`struct I { template <typename A> using of = A; };`) |
+| formula | combinator type (`A -> A`) | type of lambda (`decltype([](auto a) { return a; })`) | struct (`struct I { template <typename A> using of = A; };`) |
 | axiom scheme | primitive combinator (e.g., `I`) | primitive lambda (`[](auto a) { return a; }`) | primitive template struct (`struct I`) |
 | proof | combinator term | lambda expression | template struct |
-| modus ponens | combinator application (`F X`) | lambda application (`F(X)`) | template application (`ap<F, X>` or `F::of<X>`) |
+| modus ponens | combinator application (`F X`) | lambda application (`F(X)`) | template application (`F::of<X>` or `ap<F, X>`) |
 | normalization | combinator reduction | lambda evaluation | template instantiation |
 
 ## Getting Started
