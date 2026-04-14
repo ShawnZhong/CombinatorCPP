@@ -1,4 +1,4 @@
-# Combinatory Logic in C++
+# Combinatory Logic in C++ [![CI](https://github.com/ShawnZhong/combinatory_logic.cpp/actions/workflows/ci.yml/badge.svg)](https://github.com/ShawnZhong/combinatory_logic.cpp/actions/workflows/ci.yml)
 
 This repository explores combinatory logic in two C++ encodings:
 
