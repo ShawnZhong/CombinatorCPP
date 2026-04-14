@@ -9,20 +9,6 @@ struct is_same<T, T> {
 };
 #define eq(...) (is_same<__VA_ARGS__>::value)
 
-// Helper for curried application.
-// For example, `ap<F, X, Y>` := `F::of<X>::of<Y>`.
-template <typename F, typename... Xs>
-struct apply {
-  using type = F;
-};
-template <typename F, typename X, typename... Xs>
-struct apply<F, X, Xs...> {
-  using type = typename apply<typename F::template of<X>,
-                              Xs...>::type;
-};
-template <typename F, typename... Xs>
-using ap = typename apply<F, Xs...>::type;
-
 // ANCHOR-BEGIN: I
 // I x = x
 struct I {
@@ -36,10 +22,24 @@ static_assert(eq(I::of<I>, I), "");
 // M f = f f
 struct M {
   template <typename F>
-  using of = ap<F, F>;
+  using of = typename F::template of<F>;
 };
 static_assert(eq(M::of<I>, I), "");
 // ANCHOR-END: M
+
+// Helper for curried application.
+// For example, `ap<F, X, Y>` := `F::of<X>::of<Y>`.
+template <typename F, typename... Xs>
+struct apply {
+  using type = F;
+};
+template <typename F, typename X, typename... Xs>
+struct apply<F, X, Xs...> {
+  using type = typename apply<typename F::template of<X>,
+                              Xs...>::type;
+};
+template <typename F, typename... Xs>
+using ap = typename apply<F, Xs...>::type;
 
 // ANCHOR-BEGIN: K
 // K a b = a
