@@ -6,7 +6,7 @@ on:
       - main
   workflow_dispatch:
   schedule:
-    - cron: '0 0 1 * *'
+    - cron: "0 0 1 * *"
 
 permissions:
   contents: write
@@ -15,19 +15,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
-    - run: make
-    - name: Update README
-      if: github.event_name == 'push'
-      run: python3 .github/scripts/readme.py
-    - name: Commit README updates
-      if: github.event_name == 'push'
-      run: |
-        if git diff --quiet -- README.md; then
-          exit 0
-        fi
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        git add README.md
-        git commit -m "Update README"
-        git push
+      - uses: actions/checkout@v6
+
+      - name: Build
+        run: make
+
+      - name: Update README
+        if: github.event_name == 'push'
+        run: |
+          python3 .github/scripts/readme.py
+          if git diff --quiet -- README.md; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "Update README"
+          git push

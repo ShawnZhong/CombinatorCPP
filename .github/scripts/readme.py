@@ -18,6 +18,9 @@ README_BLOCK_RE = re.compile(
 SOURCE_ANCHOR_RE = re.compile(
     rf"ANCHOR-(?P<kind>BEGIN|END):\s*(?P<anchor>{ANCHOR_NAME_RE})\s*$"
 )
+BLOB_LINK_RE = re.compile(
+    rf"{re.escape(GITHUB_BLOB_BASE)}/[0-9a-f]{{40}}/(?P<filename>[^#\s]+)#L(?P<start>\d+)-L(?P<end>\d+)"
+)
 
 
 def collect_source_ranges(filename: str) -> dict[str, tuple[int, int]]:
@@ -85,6 +88,13 @@ def render_table(
     )
 
 
+def normalize_blob_links(text: str) -> str:
+    return BLOB_LINK_RE.sub(
+        rf"{GITHUB_BLOB_BASE}/<rev>/\g<filename>#L\g<start>-L\g<end>",
+        text,
+    )
+
+
 def update_readme(readme_text: str) -> str:
     lambda_ranges = collect_source_ranges("lambda.cpp")
     template_ranges = collect_source_ranges("template.cpp")
@@ -106,13 +116,17 @@ def update_readme(readme_text: str) -> str:
         if anchor not in template_ranges:
             raise ValueError(f"template.cpp: missing anchor {anchor}")
 
+        rendered = render_table(
+            lambda_ranges[anchor],
+            template_ranges[anchor],
+            commit_hash,
+        )
+        if normalize_blob_links(match.group("body")) == normalize_blob_links(rendered):
+            return match.group(0)
+
         return (
             match.group("begin")
-            + render_table(
-                lambda_ranges[anchor],
-                template_ranges[anchor],
-                commit_hash,
-            )
+            + rendered
             + match.group("end")
         )
 
@@ -123,7 +137,10 @@ def update_readme(readme_text: str) -> str:
 
 
 def main() -> None:
-    README_PATH.write_text(update_readme(README_PATH.read_text()))
+    readme_text = README_PATH.read_text()
+    updated = update_readme(readme_text)
+    if updated != readme_text:
+        README_PATH.write_text(updated)
 
 
 if __name__ == "__main__":
