@@ -14,7 +14,7 @@ auto eq = [](auto F, auto G) -> bool {
 auto I = [](auto a) {
   return a;
 };
-static_assert(eq(I(I), I), "I I == I");
+static_assert(eq(I(I), I));
 // ANCHOR-END: I
 
 // ANCHOR-BEGIN: M
@@ -22,7 +22,7 @@ static_assert(eq(I(I), I), "I I == I");
 auto M = [](auto f) {
   return f(f);
 };
-static_assert(eq(M(I), I), "M I == I");
+static_assert(eq(M(I), I));
 // ANCHOR-END: M
 
 // ANCHOR-BEGIN: K
@@ -32,9 +32,9 @@ auto K = [](auto a) {
     return a;
   };
 };
-static_assert(eq(K(I)(M), I), "K I M == I");
-static_assert(eq(K(M)(I), M), "K M I == M");
-static_assert(eq(K(I)(M)(K), K), "K I M K == K");
+static_assert(eq(K(I)(M), I));
+static_assert(eq(K(M)(I), M));
+static_assert(eq(K(I)(M)(K), K));
 // ANCHOR-END: K
 
 // ANCHOR-BEGIN: KI
@@ -44,8 +44,8 @@ auto KI = [](auto a) {
     return b;
   };
 };
-static_assert(eq(KI(M)(K), K), "KI M K == K");
-static_assert(eq(KI(K)(M), M), "KI K M == M");
+static_assert(eq(KI(M)(K), K));
+static_assert(eq(KI(K)(M), M));
 // ANCHOR-END: KI
 
 // ANCHOR-BEGIN: C
@@ -58,11 +58,11 @@ auto C = [](auto f) {
   };
 };
 // C KI == K
-static_assert(eq(K(I)(M), I), "K I M == I");
-static_assert(eq(C(KI)(I)(M), I), "C KI I M == I");
+static_assert(eq(K(I)(M), I));
+static_assert(eq(C(KI)(I)(M), I));
 // KI == C K
-static_assert(eq(C(K)(I)(M), M), "C K I M == M");
-static_assert(eq(KI(I)(M), M), "KI I M == M");
+static_assert(eq(C(K)(I)(M), M));
+static_assert(eq(KI(I)(M), M));
 // ANCHOR-END: C
 
 // ANCHOR-BEGIN: T_F
@@ -70,8 +70,8 @@ static_assert(eq(KI(I)(M), M), "KI I M == M");
 // F x y = y
 auto T = K;
 auto F = KI; // == C K
-static_assert(eq(T(T)(F), T), "T T F == T");
-static_assert(eq(F(T)(F), F), "F T F == F");
+static_assert(eq(T(T)(F), T));
+static_assert(eq(F(T)(F), F));
 // ANCHOR-END: T_F
 
 // ANCHOR-BEGIN: NOT
@@ -79,10 +79,10 @@ static_assert(eq(F(T)(F), F), "F T F == F");
 auto NOT = [](auto p) {
   return p(F)(T);
 };
-static_assert(eq(NOT(T), F), "NOT T == F");
-static_assert(eq(NOT(F), T), "NOT F == T");
-static_assert(eq(C(T)(T)(F), F), "C(T) T F == F");
-static_assert(eq(C(F)(T)(F), T), "C(F) T F == T");
+static_assert(eq(NOT(T), F));
+static_assert(eq(NOT(F), T));
+static_assert(eq(C(T)(T)(F), F));
+static_assert(eq(C(F)(T)(F), T));
 // ANCHOR-END: NOT
 
 // ANCHOR-BEGIN: AND
@@ -93,10 +93,10 @@ auto AND = [](auto p) {
     return p(q)(p);
   };
 };
-static_assert(eq(AND(T)(T), T), "AND T T == T");
-static_assert(eq(AND(T)(F), F), "AND T F == F");
-static_assert(eq(AND(F)(T), F), "AND F T == F");
-static_assert(eq(AND(F)(F), F), "AND F F == F");
+static_assert(eq(AND(T)(T), T));
+static_assert(eq(AND(T)(F), F));
+static_assert(eq(AND(F)(T), F));
+static_assert(eq(AND(F)(F), F));
 // ANCHOR-END: AND
 
 // ANCHOR-BEGIN: OR
@@ -107,10 +107,10 @@ auto OR = [](auto p) {
     return p(p)(q);
   };
 };
-static_assert(eq(OR(T)(T), T), "OR T T == T");
-static_assert(eq(OR(T)(F), T), "OR T F == T");
-static_assert(eq(OR(F)(T), T), "OR F T == T");
-static_assert(eq(OR(F)(F), F), "OR F F == F");
+static_assert(eq(OR(T)(T), T));
+static_assert(eq(OR(T)(F), T));
+static_assert(eq(OR(F)(T), T));
+static_assert(eq(OR(F)(F), F));
 // ANCHOR-END: OR
 
 // ANCHOR-BEGIN: BEQ
@@ -120,10 +120,10 @@ auto BEQ = [](auto p) {
     return p(q)(NOT(q));
   };
 };
-static_assert(eq(BEQ(T)(T), T), "BEQ T T == T");
-static_assert(eq(BEQ(T)(F), F), "BEQ T F == F");
-static_assert(eq(BEQ(F)(T), F), "BEQ F T == F");
-static_assert(eq(BEQ(F)(F), T), "BEQ F F == T");
+static_assert(eq(BEQ(T)(T), T));
+static_assert(eq(BEQ(T)(F), F));
+static_assert(eq(BEQ(F)(T), F));
+static_assert(eq(BEQ(F)(F), T));
 // ANCHOR-END: BEQ
 
 // ANCHOR-BEGIN: XOR
@@ -133,10 +133,10 @@ auto XOR = [](auto p) {
     return p(NOT(q))(q);
   };
 };
-static_assert(eq(XOR(T)(T), F), "XOR T T == F");
-static_assert(eq(XOR(T)(F), T), "XOR T F == T");
-static_assert(eq(XOR(F)(T), T), "XOR F T == T");
-static_assert(eq(XOR(F)(F), F), "XOR F F == F");
+static_assert(eq(XOR(T)(T), F));
+static_assert(eq(XOR(T)(F), T));
+static_assert(eq(XOR(F)(T), T));
+static_assert(eq(XOR(F)(F), F));
 // ANCHOR-END: XOR
 
 // Church numerals
@@ -164,10 +164,10 @@ auto N3 = [](auto f) {
     return f(f(f(x)));
   };
 };
-static_assert(eq(N0(NOT)(F), F), "N0 NOT F == F");
-static_assert(eq(N1(NOT)(F), T), "N1 NOT F == T");
-static_assert(eq(N2(NOT)(F), F), "N2 NOT F == F");
-static_assert(eq(N3(NOT)(F), T), "N3 NOT F == T");
+static_assert(eq(N0(NOT)(F), F));
+static_assert(eq(N1(NOT)(F), T));
+static_assert(eq(N2(NOT)(F), F));
+static_assert(eq(N3(NOT)(F), T));
 
 // Convert Church numerals to C++ integers.
 auto succ = [](int x) -> int {
@@ -179,10 +179,10 @@ auto to_nat = [](auto n) -> int {
 auto eq_nat = [](auto n, int x) -> bool {
   return to_nat(n) == x;
 };
-static_assert(eq_nat(N0, 0), "N0 = 0");
-static_assert(eq_nat(N1, 1), "N1 = 1");
-static_assert(eq_nat(N2, 2), "N2 = 2");
-static_assert(eq_nat(N3, 3), "N3 = 3");
+static_assert(eq_nat(N0, 0));
+static_assert(eq_nat(N1, 1));
+static_assert(eq_nat(N2, 2));
+static_assert(eq_nat(N3, 3));
 
 // ANCHOR-BEGIN: SUCC
 // SUCC n f x = f (n f x)
@@ -193,11 +193,11 @@ auto SUCC = [](auto n) {
     };
   };
 };
-static_assert(eq_nat(SUCC(N0), 1), "SUCC N0 = 1");
-static_assert(eq_nat(SUCC(SUCC(N0)), 2), "SUCC SUCC N0 = 2");
-static_assert(eq_nat(SUCC(SUCC(SUCC(N0))), 3), "SUCC SUCC SUCC N0 = 3");
+static_assert(eq_nat(SUCC(N0), 1));
+static_assert(eq_nat(SUCC(SUCC(N0)), 2));
+static_assert(eq_nat(SUCC(SUCC(SUCC(N0))), 3));
 auto N4 = SUCC(N3);
-static_assert(eq_nat(N4, 4), "N4 = 4");
+static_assert(eq_nat(N4, 4));
 // ANCHOR-END: SUCC
 
 // ANCHOR-BEGIN: PRED
@@ -213,9 +213,9 @@ auto PRED = [](auto n) {
     };
   };
 };
-static_assert(eq_nat(PRED(N1), 0), "PRED N1 = 0");
-static_assert(eq_nat(PRED(N2), 1), "PRED N2 = 1");
-static_assert(eq_nat(PRED(N3), 2), "PRED N3 = 2");
+static_assert(eq_nat(PRED(N1), 0));
+static_assert(eq_nat(PRED(N2), 1));
+static_assert(eq_nat(PRED(N3), 2));
 // ANCHOR-END: PRED
 
 // ANCHOR-BEGIN: B
@@ -227,7 +227,7 @@ auto B = [](auto f) {
     };
   };
 };
-static_assert(eq(B(NOT)(NOT)(T), T), "B(NOT) NOT T == T");
+static_assert(eq(B(NOT)(NOT)(T), T));
 // ANCHOR-END: B
 
 // ANCHOR-BEGIN: SUCC2
@@ -237,8 +237,8 @@ auto SUCC2 = [](auto n) {
     return B(f)(n(f));
   };
 };
-static_assert(eq_nat(SUCC2(N0), 1), "SUCC2 N0 = 1");
-static_assert(eq_nat(SUCC2(N3), 4), "SUCC2 N3 = 4");
+static_assert(eq_nat(SUCC2(N0), 1));
+static_assert(eq_nat(SUCC2(N3), 4));
 // ANCHOR-END: SUCC2
 
 // ANCHOR-BEGIN: ADD
@@ -249,7 +249,7 @@ auto ADD = [](auto n) {
   };
 };
 auto N5 = ADD(N2)(N3);
-static_assert(eq_nat(N5, 5), "ADD N2 N3 = 5");
+static_assert(eq_nat(N5, 5));
 // ANCHOR-END: ADD
 
 // ANCHOR-BEGIN: MUL
@@ -263,9 +263,9 @@ auto MUL = [](auto n) {
 };
 auto N6 = MUL(N2)(N3);
 auto N7 = ADD(MUL(N2)(N2))(MUL(N1)(N3));
-static_assert(eq_nat(N6, 6), "MUL N2 N3 = 6");
-static_assert(eq_nat(N7, 7), "ADD MUL N2 N2 MUL N1 N3 = 7");
-static_assert(eq_nat(B(N2)(N3), 6), "B N2 N3 = 6");
+static_assert(eq_nat(N6, 6));
+static_assert(eq_nat(N7, 7));
+static_assert(eq_nat(B(N2)(N3), 6));
 // ANCHOR-END: MUL
 
 // ANCHOR-BEGIN: POW
@@ -278,9 +278,9 @@ auto POW = [](auto n) {
 auto Th = POW;
 auto N8 = POW(N2)(N3);
 auto N9 = Th(N3)(N2);
-static_assert(eq_nat(N8, 8), "POW N2 N3 = 8");
-static_assert(eq_nat(N9, 9), "Th N3 N2 = 9");
-static_assert(eq_nat(POW(N3)(N4), 81), "POW N3 N4 = 81");
+static_assert(eq_nat(N8, 8));
+static_assert(eq_nat(N9, 9));
+static_assert(eq_nat(POW(N3)(N4), 81));
 // ANCHOR-END: POW
 
 // ANCHOR-BEGIN: IS_ZERO
@@ -288,9 +288,9 @@ static_assert(eq_nat(POW(N3)(N4), 81), "POW N3 N4 = 81");
 auto IS_ZERO = [](auto n) {
   return n(K(F))(T);
 };
-static_assert(eq(IS_ZERO(N0), T), "IS_ZERO N0 = T");
-static_assert(eq(IS_ZERO(N1), F), "IS_ZERO N1 = F");
-static_assert(eq(IS_ZERO(N2), F), "IS_ZERO N2 = F");
+static_assert(eq(IS_ZERO(N0), T));
+static_assert(eq(IS_ZERO(N1), F));
+static_assert(eq(IS_ZERO(N2), F));
 // ANCHOR-END: IS_ZERO
 
 // ANCHOR-BEGIN: V_PAIR
@@ -302,9 +302,9 @@ auto V = [](auto a) {
     };
   };
 };
-static_assert(eq_nat(V(N2)(N3)(ADD), 5), "V N2 N3 ADD = 5");
-static_assert(eq(V(I)(M)(K), I), "V I M K = I");
-static_assert(eq(V(I)(M)(KI), M), "V I M KI = M");
+static_assert(eq_nat(V(N2)(N3)(ADD), 5));
+static_assert(eq(V(I)(M)(K), I));
+static_assert(eq(V(I)(M)(KI), M));
 
 // PAIR = V
 auto PAIR = V;
@@ -315,8 +315,8 @@ auto PAIR = V;
 auto FST = [](auto p) {
   return p(K);
 };
-static_assert(eq(FST(PAIR(I)(M)), I), "FST PAIR I M = I");
-static_assert(eq(FST(PAIR(N2)(N3)), N2), "FST PAIR N2 N3 = N2");
+static_assert(eq(FST(PAIR(I)(M)), I));
+static_assert(eq(FST(PAIR(N2)(N3)), N2));
 // ANCHOR-END: FST
 
 // ANCHOR-BEGIN: SND
@@ -324,8 +324,8 @@ static_assert(eq(FST(PAIR(N2)(N3)), N2), "FST PAIR N2 N3 = N2");
 auto SND = [](auto p) {
   return p(KI);
 };
-static_assert(eq(SND(PAIR(I)(M)), M), "SND PAIR I M = M");
-static_assert(eq(SND(PAIR(N2)(N3)), N3), "SND PAIR N2 N3 = N3");
+static_assert(eq(SND(PAIR(I)(M)), M));
+static_assert(eq(SND(PAIR(N2)(N3)), N3));
 // ANCHOR-END: SND
 
 // ANCHOR-BEGIN: PHI
@@ -333,10 +333,9 @@ static_assert(eq(SND(PAIR(N2)(N3)), N3), "SND PAIR N2 N3 = N3");
 auto PHI = [](auto p) {
   return V(SND(p))(SUCC(SND(p)));
 };
-static_assert(eq_nat(FST(PHI(PAIR(N0)(N0))), 0), "FST PHI PAIR N0 N0 = 0");
-static_assert(eq_nat(SND(PHI(PAIR(N0)(N0))), 1), "SND PHI PAIR N0 N0 = 1");
-static_assert(eq_nat(FST(N3(PHI)(PAIR(N0)(N0))), 2),
-              "FST N3 PHI PAIR N0 N0 = 2");
+static_assert(eq_nat(FST(PHI(PAIR(N0)(N0))), 0));
+static_assert(eq_nat(SND(PHI(PAIR(N0)(N0))), 1));
+static_assert(eq_nat(FST(N3(PHI)(PAIR(N0)(N0))), 2));
 // ANCHOR-END: PHI
 
 // ANCHOR-BEGIN: PRED2
@@ -344,9 +343,9 @@ static_assert(eq_nat(FST(N3(PHI)(PAIR(N0)(N0))), 2),
 auto PRED2 = [](auto n) {
   return FST(n(PHI)(PAIR(N0)(N0)));
 };
-static_assert(eq_nat(PRED2(N1), 0), "PRED2 N1 = 0");
-static_assert(eq_nat(PRED2(N2), 1), "PRED2 N2 = 1");
-static_assert(eq_nat(PRED2(N3), 2), "PRED2 N3 = 2");
+static_assert(eq_nat(PRED2(N1), 0));
+static_assert(eq_nat(PRED2(N2), 1));
+static_assert(eq_nat(PRED2(N3), 2));
 // ANCHOR-END: PRED2
 
 // ANCHOR-BEGIN: SUB
@@ -356,10 +355,10 @@ auto SUB = [](auto n) {
     return k(PRED)(n);
   };
 };
-static_assert(eq_nat(SUB(N0)(N0), 0), "SUB N0 N0 = 0");
-static_assert(eq_nat(SUB(N3)(N1), 2), "SUB N3 N1 = 2");
-static_assert(eq_nat(SUB(N3)(N2), 1), "SUB N3 N2 = 1");
-static_assert(eq_nat(SUB(N9)(N2), 7), "SUB N9 N2 = 7");
+static_assert(eq_nat(SUB(N0)(N0), 0));
+static_assert(eq_nat(SUB(N3)(N1), 2));
+static_assert(eq_nat(SUB(N3)(N2), 1));
+static_assert(eq_nat(SUB(N9)(N2), 7));
 // ANCHOR-END: SUB
 
 // ANCHOR-BEGIN: LEQ
@@ -369,9 +368,9 @@ auto LEQ = [](auto n) {
     return IS_ZERO(SUB(n)(k));
   };
 };
-static_assert(eq(LEQ(N1)(N3), T), "LEQ N1 N3 = T");
-static_assert(eq(LEQ(N2)(N2), T), "LEQ N2 N2 = T");
-static_assert(eq(LEQ(N3)(N1), F), "LEQ N3 N1 = F");
+static_assert(eq(LEQ(N1)(N3), T));
+static_assert(eq(LEQ(N2)(N2), T));
+static_assert(eq(LEQ(N3)(N1), F));
 // ANCHOR-END: LEQ
 
 // ANCHOR-BEGIN: EQ
@@ -381,9 +380,9 @@ auto EQ = [](auto n) {
     return AND(LEQ(n)(k))(LEQ(k)(n));
   };
 };
-static_assert(eq(EQ(N1)(N3), F), "EQ N1 N3 = F");
-static_assert(eq(EQ(N2)(N2), T), "EQ N2 N2 = T");
-static_assert(eq(EQ(N3)(N1), F), "EQ N3 N1 = F");
+static_assert(eq(EQ(N1)(N3), F));
+static_assert(eq(EQ(N2)(N2), T));
+static_assert(eq(EQ(N3)(N1), F));
 // ANCHOR-END: EQ
 
 // ANCHOR-BEGIN: GT
@@ -393,9 +392,9 @@ auto GT = [](auto n) {
     return NOT(LEQ(n)(k));
   };
 };
-static_assert(eq(GT(N1)(N3), F), "GT N1 N3 = F");
-static_assert(eq(GT(N2)(N2), F), "GT N2 N2 = F");
-static_assert(eq(GT(N3)(N1), T), "GT N3 N1 = T");
+static_assert(eq(GT(N1)(N3), F));
+static_assert(eq(GT(N2)(N2), F));
+static_assert(eq(GT(N3)(N1), T));
 // ANCHOR-END: GT
 
 // ANCHOR-BEGIN: B1
@@ -414,9 +413,9 @@ auto B1 = [](auto f) {
 // ANCHOR-BEGIN: GT2
 // GT2 n k = B1 NOT LEQ n k = NOT (LEQ n k)
 auto GT2 = B1(NOT)(LEQ);
-static_assert(eq(GT2(N1)(N3), F), "GT2 N1 N3 = F");
-static_assert(eq(GT2(N2)(N2), F), "GT2 N2 N2 = F");
-static_assert(eq(GT2(N3)(N1), T), "GT2 N3 N1 = T");
+static_assert(eq(GT2(N1)(N3), F));
+static_assert(eq(GT2(N2)(N2), F));
+static_assert(eq(GT2(N3)(N1), T));
 // ANCHOR-END: GT2
 
 // ANCHOR-BEGIN: SET_FST
@@ -426,8 +425,7 @@ auto SET_FST = [](auto x) {
     return PAIR(x)(SND(p));
   };
 };
-static_assert(eq_nat(FST(SET_FST(N3)(PAIR(N1)(N2))), 3),
-              "FST SET_FST N3 PAIR N1 N2 = 3");
+static_assert(eq_nat(FST(SET_FST(N3)(PAIR(N1)(N2))), 3));
 // ANCHOR-END: SET_FST
 
 // ANCHOR-BEGIN: SET_SND
@@ -437,8 +435,7 @@ auto SET_SND = [](auto x) {
     return PAIR(FST(p))(x);
   };
 };
-static_assert(eq_nat(SND(SET_SND(N3)(PAIR(N1)(N2))), 3),
-              "SND SET_SND N3 PAIR N1 N2 = 3");
+static_assert(eq_nat(SND(SET_SND(N3)(PAIR(N1)(N2))), 3));
 // ANCHOR-END: SET_SND
 
 // ANCHOR-BEGIN: FIB
@@ -452,16 +449,16 @@ auto FIB = [](auto n) {
     };
   })(K)(N0)(N1);
 };
-static_assert(eq_nat(FIB(N0), 0), "FIB N0 = 0");
-static_assert(eq_nat(FIB(N1), 1), "FIB N1 = 1");
-static_assert(eq_nat(FIB(N2), 1), "FIB N2 = 1");
-static_assert(eq_nat(FIB(N3), 2), "FIB N3 = 2");
-static_assert(eq_nat(FIB(N4), 3), "FIB N4 = 3");
-static_assert(eq_nat(FIB(N5), 5), "FIB N5 = 5");
-static_assert(eq_nat(FIB(N6), 8), "FIB N6 = 8");
-static_assert(eq_nat(FIB(N7), 13), "FIB N7 = 13");
-static_assert(eq_nat(FIB(N8), 21), "FIB N8 = 21");
-static_assert(eq_nat(FIB(N9), 34), "FIB N9 = 34");
+static_assert(eq_nat(FIB(N0), 0));
+static_assert(eq_nat(FIB(N1), 1));
+static_assert(eq_nat(FIB(N2), 1));
+static_assert(eq_nat(FIB(N3), 2));
+static_assert(eq_nat(FIB(N4), 3));
+static_assert(eq_nat(FIB(N5), 5));
+static_assert(eq_nat(FIB(N6), 8));
+static_assert(eq_nat(FIB(N7), 13));
+static_assert(eq_nat(FIB(N8), 21));
+static_assert(eq_nat(FIB(N9), 34));
 // ANCHOR-END: FIB
 
 // ANCHOR-BEGIN: Y
