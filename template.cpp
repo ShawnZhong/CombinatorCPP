@@ -29,6 +29,8 @@ struct I {
   template <typename X>
   using of = X;
 };
+static_assert(eq(I::of<I>, I), "");
+// Syntactic sugar for application
 static_assert(eq(ap<I, I>, I), "");
 // ANCHOR-END: I
 
@@ -52,6 +54,8 @@ struct K {
   template <typename A>
   using of = with_a<A>;
 };
+static_assert(eq(K::of<I>::of<M>, I), "");
+// Syntactic sugar for curried application
 static_assert(eq(ap<K, I, M>, I), "");
 static_assert(eq(ap<K, M, I>, M), "");
 static_assert(eq(ap<K, I, M, K>, K), "");
