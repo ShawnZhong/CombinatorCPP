@@ -26,223 +26,301 @@ Build with `make` compiles
 
 ### Basic Combinators
 
-`I`
+`I`: Identity combinator, aka idiot combinator. `I x = x`.
 
+<!-- ANCHOR-BEGIN: I -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L14-L22 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L15-L21 |
+| [`L12-L18`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L12-L18) | [`L13-L19`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L13-L19) |
+<!-- ANCHOR-END: I -->
 
-`M`
+`M`: Mockingbird combinator. `M f = f f`.
 
+<!-- ANCHOR-BEGIN: M -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L24-L32 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L23-L29 |
+| [`L20-L26`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L20-L26) | [`L21-L27`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L21-L27) |
+<!-- ANCHOR-END: M -->
 
-`K`
+`K`: Kestrel combinator, aka constant combinator. `K a b = a`.
 
+<!-- ANCHOR-BEGIN: K -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L34-L46 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L31-L43 |
+| [`L28-L38`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L28-L38) | [`L29-L40`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L29-L40) |
+<!-- ANCHOR-END: K -->
 
-`KI`
+`KI`: Kite combinator, equivalent to `K I` and `C K`. `KI a b = b`.
 
+<!-- ANCHOR-BEGIN: KI -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L48-L59 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L45-L56 |
+| [`L40-L49`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L40-L49) | [`L42-L52`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L42-L52) |
+<!-- ANCHOR-END: KI -->
 
-`C`
+`C`: Cardinal combinator, aka flip combinator. `C f a b = f b a`.
 
+<!-- ANCHOR-BEGIN: C -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L61-L78 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L58-L77 |
+| [`L51-L66`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L51-L66) | [`L54-L71`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L54-L71) |
+<!-- ANCHOR-END: C -->
 
 ### Church Booleans
 
-`T`, `F`
+Booleans are encoded as branch selectors.
 
+`T`, `F`: Church booleans. `T x y = x`; `F x y = y`.
+
+<!-- ANCHOR-BEGIN: T_F -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L80-L88 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L79-L85 |
+| [`L68-L75`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L68-L75) | [`L73-L80`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L73-L80) |
+<!-- ANCHOR-END: T_F -->
 
-`NOT`
+`NOT`: Boolean negation, equivalent to `C`. `NOT p = p F T`.
 
+<!-- ANCHOR-BEGIN: NOT -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L90-L100 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L87-L95 |
+| [`L77-L86`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L77-L86) | [`L82-L91`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L82-L91) |
+<!-- ANCHOR-END: NOT -->
 
-`AND`
+`AND`: Conjunction. `AND p q = p q F = p q p`.
 
+<!-- ANCHOR-BEGIN: AND -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L102-L115 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L97-L110 |
+| [`L88-L100`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L88-L100) | [`L93-L106`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L93-L106) |
+<!-- ANCHOR-END: AND -->
 
-`OR`
+`OR`: Boolean disjunction, equivalent to `M*`. `OR p q = p T q = p p q`.
 
+<!-- ANCHOR-BEGIN: OR -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L117-L130 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L112-L125 |
+| [`L102-L114`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L102-L114) | [`L108-L121`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L108-L121) |
+<!-- ANCHOR-END: OR -->
 
-`BEQ`
+`BEQ`: Boolean equality. `BEQ p q = p q (NOT q)`.
 
+<!-- ANCHOR-BEGIN: BEQ -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L132-L144 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L127-L139 |
+| [`L116-L127`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L116-L127) | [`L123-L135`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L123-L135) |
+<!-- ANCHOR-END: BEQ -->
 
-`XOR`
+`XOR`: Exclusive disjunction. `XOR p q = p (NOT q) q`.
 
+<!-- ANCHOR-BEGIN: XOR -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L146-L158 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L141-L153 |
+| [`L129-L140`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L129-L140) | [`L137-L149`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L137-L149) |
+<!-- ANCHOR-END: XOR -->
 
 ### Church Numerals and Arithmetic
 
-`SUCC`
+Church numerals encode a natural number as repeated application of a function to a seed value.
 
+`SUCC`: Successor. `SUCC n f x = f (n f x)`.
+
+<!-- ANCHOR-BEGIN: SUCC -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L208-L223 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L214-L232 |
+| [`L184-L198`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L184-L198) | [`L206-L223`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L206-L223) |
+<!-- ANCHOR-END: SUCC -->
 
-`PRED`
+`PRED`: Predecessor via a shifting helper. `PRED n f x = n shift (K x) I`, where `shift f g = C I (g f)`.
 
+<!-- ANCHOR-BEGIN: PRED -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L225-L242 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L234-L257 |
+| [`L200-L216`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L200-L216) | [`L225-L246`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L225-L246) |
+<!-- ANCHOR-END: PRED -->
 
-`B`
+`B`: Bluebird combinator. `B f g x = f (g x)`.
 
+<!-- ANCHOR-BEGIN: B -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L244-L256 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L259-L273 |
+| [`L218-L228`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L218-L228) | [`L248-L260`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L248-L260) |
+<!-- ANCHOR-END: B -->
 
-`SUCC2`
+`SUCC2`: Successor expressed through `B`. `SUCC2 n f x = B f (n f) x`.
 
+<!-- ANCHOR-BEGIN: SUCC2 -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L258-L268 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L275-L289 |
+| [`L230-L239`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L230-L239) | [`L262-L275`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L262-L275) |
+<!-- ANCHOR-END: SUCC2 -->
 
-`ADD`
+`ADD`: Addition. `ADD n k = n SUCC k`.
 
+<!-- ANCHOR-BEGIN: ADD -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L270-L281 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L291-L301 |
+| [`L241-L250`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L241-L250) | [`L277-L287`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L277-L287) |
+<!-- ANCHOR-END: ADD -->
 
-`MUL`
+`MUL`: Multiplication, equivalent to `B`. `MUL n k f = n (k f)`.
 
+<!-- ANCHOR-BEGIN: MUL -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L283-L298 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L303-L320 |
+| [`L252-L266`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L252-L266) | [`L289-L305`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L289-L305) |
+<!-- ANCHOR-END: MUL -->
 
-`POW`
+`POW`: Exponentiation, equivalent to the Thrush combinator. `POW n k = k n`.
 
+<!-- ANCHOR-BEGIN: POW -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L300-L314 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L322-L338 |
+| [`L268-L281`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L268-L281) | [`L307-L322`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L307-L322) |
+<!-- ANCHOR-END: POW -->
 
-`IS_ZERO`
+`IS_ZERO`: Zero test. `IS_ZERO n = n (K F) T`.
 
+<!-- ANCHOR-BEGIN: IS_ZERO -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L316-L326 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L340-L347 |
+| [`L283-L291`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L283-L291) | [`L324-L332`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L324-L332) |
+<!-- ANCHOR-END: IS_ZERO -->
 
 ### Pairs and Comparisons
 
-`V`, `PAIR`
+Pairs are encoded as functions that hand two stored values to a selector.
 
+`V`, `PAIR`: Vireo combinator, equivalent to `B C T`. `PAIR` is an alias of `V`. `V a b f = f a b`.
+
+<!-- ANCHOR-BEGIN: V_PAIR -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L328-L348 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L349-L369 |
+| [`L293-L308`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L293-L308) | [`L334-L352`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L334-L352) |
+<!-- ANCHOR-END: V_PAIR -->
 
-`FST`
+`FST`: First projection. `FST p = p K`.
 
+<!-- ANCHOR-BEGIN: FST -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L350-L358 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L371-L378 |
+| [`L310-L317`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L310-L317) | [`L354-L362`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L354-L362) |
+<!-- ANCHOR-END: FST -->
 
-`SND`
+`SND`: Second projection. `SND p = p KI`.
 
+<!-- ANCHOR-BEGIN: SND -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L360-L368 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L380-L387 |
+| [`L319-L326`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L319-L326) | [`L364-L372`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L364-L372) |
+<!-- ANCHOR-END: SND -->
 
-`PHI`
+`PHI`: Pair transformer used in predecessor constructions. `PHI p = PAIR (SND p) (SUCC (SND p))`.
 
+<!-- ANCHOR-BEGIN: PHI -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L370-L381 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L389-L402 |
+| [`L328-L337`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L328-L337) | [`L374-L387`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L374-L387) |
+<!-- ANCHOR-END: PHI -->
 
-`PRED2`
+`PRED2`: Predecessor expressed through `PHI`. `PRED2 n = FST (n PHI (PAIR N0 N0))`.
 
+<!-- ANCHOR-BEGIN: PRED2 -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L384-L392 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L404-L412 |
+| [`L339-L347`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L339-L347) | [`L389-L398`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L389-L398) |
+<!-- ANCHOR-END: PRED2 -->
 
-`SUB`
+`SUB`: Subtraction. `SUB n k = k PRED n`.
 
+<!-- ANCHOR-BEGIN: SUB -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L394-L407 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L414-L425 |
+| [`L349-L360`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L349-L360) | [`L400-L411`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L400-L411) |
+<!-- ANCHOR-END: SUB -->
 
-`LEQ`
+`LEQ`: Less-than-or-equal. `LEQ n k = IS_ZERO (SUB n k)`.
 
+<!-- ANCHOR-BEGIN: LEQ -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L409-L421 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L427-L438 |
+| [`L362-L372`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L362-L372) | [`L413-L424`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L413-L424) |
+<!-- ANCHOR-END: LEQ -->
 
-`EQ`
+`EQ`: Equality. `EQ n k = AND (LEQ n k) (LEQ k n)`.
 
+<!-- ANCHOR-BEGIN: EQ -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L423-L435 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L440-L452 |
+| [`L374-L384`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L374-L384) | [`L426-L438`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L426-L438) |
+<!-- ANCHOR-END: EQ -->
 
-`GT`
+`GT`: Greater-than. `GT n k = NOT (LEQ n k)`.
 
+<!-- ANCHOR-BEGIN: GT -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L437-L449 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L454-L465 |
+| [`L386-L396`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L386-L396) | [`L440-L451`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L440-L451) |
+<!-- ANCHOR-END: GT -->
 
-`B1`
+`B1`: Blackbird combinator, equivalent to `B B B`. `B1 f g a b = f (g a b)`.
 
+<!-- ANCHOR-BEGIN: B1 -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L451-L464 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L467-L484 |
+| [`L398-L409`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L398-L409) | [`L453-L467`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L453-L467) |
+<!-- ANCHOR-END: B1 -->
 
-`GT2`
+`GT2`: Greater-than expressed through `B1`. `GT2 n k = B1 NOT LEQ n k`.
 
+<!-- ANCHOR-BEGIN: GT2 -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L466-L473 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L486-L491 |
+| [`L411-L417`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L411-L417) | [`L469-L475`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L469-L475) |
+<!-- ANCHOR-END: GT2 -->
 
-`SET_FST`
+`SET_FST`: Update the first element of a pair. `SET_FST x p = PAIR x (SND p)`.
 
+<!-- ANCHOR-BEGIN: SET_FST -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L475-L485 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L493-L504 |
+| [`L419-L428`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L419-L428) | [`L477-L488`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L477-L488) |
+<!-- ANCHOR-END: SET_FST -->
 
-`SET_SND`
+`SET_SND`: Update the second element of a pair. `SET_SND x p = PAIR (FST p) x`.
 
+<!-- ANCHOR-BEGIN: SET_SND -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L487-L497 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L506-L517 |
+| [`L430-L439`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L430-L439) | [`L490-L501`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L490-L501) |
+<!-- ANCHOR-END: SET_SND -->
 
 ### Fibonacci and Fixed-Point Combinators
 
-`FIB`
+These examples show nontrivial compositions and direct lambda-term translations.
 
+`FIB`: Fibonacci over Church numerals. `FIB n = n step K N0 N1`, where `step f a b = f b (ADD a b)`.
+
+<!-- ANCHOR-BEGIN: FIB -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L499-L521 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L519-L544 |
+| [`L441-L462`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L441-L462) | [`L503-L527`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L503-L527) |
+<!-- ANCHOR-END: FIB -->
 
-`Y`
+`Y`: Direct syntactic translation of the classic fixed-point combinator. It is not usable here under eager C++ evaluation.
 
+<!-- ANCHOR-BEGIN: Y -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L523-L534 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L546-L555 |
+| [`L464-L473`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L464-L473) | [`L529-L537`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L529-L537) |
+<!-- ANCHOR-END: Y -->
 
-`Z`
+`Z`: Delayed fixed-point variant. The C++ type system still prevents direct use here.
 
+<!-- ANCHOR-BEGIN: Z -->
 | `lambda.cpp` | `template.cpp` |
 | --- | --- |
-| https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/lambda.cpp#L536-L551 | https://github.com/ShawnZhong/combinatory_logic.cpp/blob/0f6a609fbb916ef1accf7e69fc9d64b1697fd8bd/template.cpp#L557-L569 |
+| [`L475-L488`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/lambda.cpp#L475-L488) | [`L539-L550`](https://github.com/ShawnZhong/combinatory_logic.cpp/blob/c59e87cebc40d578976ceebdc396b10b3a4832fc/template.cpp#L539-L550) |
+<!-- ANCHOR-END: Z -->
 
 
 ## Further Reading

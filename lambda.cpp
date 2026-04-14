@@ -1,6 +1,4 @@
-/**
- * Helper function to compare if two functions are of the same type
- */
+// Helper to compare whether two functions have the same type.
 template <typename A, typename B> struct is_same {
   static constexpr bool value = false;
 };
@@ -11,31 +9,24 @@ auto eq = [](auto F, auto G) -> bool {
   return is_same<decltype(F), decltype(G)>::value;
 };
 
-/**
- * Identity combinator, aka idiot combinator
- * returns the argument unchanged
- * λa.a
- */
+// ANCHOR-BEGIN: I
+// I x = x
 auto I = [](auto a) {
   return a;
 };
 static_assert(eq(I(I), I), "I I == I");
+// ANCHOR-END: I
 
-/**
- * Mockingbird combinator
- * applies the argument to itself
- * λf.f f
- */
+// ANCHOR-BEGIN: M
+// M f = f f
 auto M = [](auto f) {
   return f(f);
 };
 static_assert(eq(M(I), I), "M I == I");
+// ANCHOR-END: M
 
-/**
- * Kestrel combinator, aka constant combinator
- * returns the first argument unchanged
- * λab.a
- */
+// ANCHOR-BEGIN: K
+// K a b = a
 auto K = [](auto a) {
   return [=](auto b) {
     return a;
@@ -44,12 +35,10 @@ auto K = [](auto a) {
 static_assert(eq(K(I)(M), I), "K I M == I");
 static_assert(eq(K(M)(I), M), "K M I == M");
 static_assert(eq(K(I)(M)(K), K), "K I M K == K");
+// ANCHOR-END: K
 
-/**
- * Kite combinator, equivalent to K(I) and C(K)
- * returns the second argument unchanged
- * λab.b
- */
+// ANCHOR-BEGIN: KI
+// KI a b = b
 auto KI = [](auto a) {
   return [](auto b) {
     return b;
@@ -57,12 +46,10 @@ auto KI = [](auto a) {
 };
 static_assert(eq(KI(M)(K), K), "KI M K == K");
 static_assert(eq(KI(K)(M), M), "KI K M == M");
+// ANCHOR-END: KI
 
-/**
- * Cardinal combinator, aka flip combinator
- * reverses the arguments
- * λfab.fba
- */
+// ANCHOR-BEGIN: C
+// C f a b = f b a
 auto C = [](auto f) {
   return [=](auto a) {
     return [=](auto b) {
@@ -76,21 +63,19 @@ static_assert(eq(C(KI)(I)(M), I), "C KI I M == I");
 // KI == C K
 static_assert(eq(C(K)(I)(M), M), "C K I M == M");
 static_assert(eq(KI(I)(M), M), "KI I M == M");
+// ANCHOR-END: C
 
-/**
- * Church encoding of booleans
- * T T F = T
- * F T F = F
- */
+// ANCHOR-BEGIN: T_F
+// T x y = x
+// F x y = y
 auto T = K;
 auto F = KI; // == C K
 static_assert(eq(T(T)(F), T), "T T F == T");
 static_assert(eq(F(T)(F), F), "F T F == F");
+// ANCHOR-END: T_F
 
-/**
- * Negation, equivalent to C
- * λp.p F T
- */
+// ANCHOR-BEGIN: NOT
+// NOT p = p F T
 auto NOT = [](auto p) {
   return p(F)(T);
 };
@@ -98,11 +83,10 @@ static_assert(eq(NOT(T), F), "NOT T == F");
 static_assert(eq(NOT(F), T), "NOT F == T");
 static_assert(eq(C(T)(T)(F), F), "C(T) T F == F");
 static_assert(eq(C(F)(T)(F), T), "C(F) T F == T");
+// ANCHOR-END: NOT
 
-/**
- * Conjunction
- * λpq.p q p = λpq.p q F
- */
+// ANCHOR-BEGIN: AND
+// AND p q = p q F = p q p
 auto AND = [](auto p) {
   return [=](auto q) {
     // return p(q)(F);
@@ -113,11 +97,10 @@ static_assert(eq(AND(T)(T), T), "AND T T == T");
 static_assert(eq(AND(T)(F), F), "AND T F == F");
 static_assert(eq(AND(F)(T), F), "AND F T == F");
 static_assert(eq(AND(F)(F), F), "AND F F == F");
+// ANCHOR-END: AND
 
-/**
- * Disjunction, equivalent to M*
- * λpq.p p q = λpq.p T q
- */
+// ANCHOR-BEGIN: OR
+// OR p q = p T q = p p q
 auto OR = [](auto p) {
   return [=](auto q) {
     // return p(T)(q);
@@ -128,11 +111,10 @@ static_assert(eq(OR(T)(T), T), "OR T T == T");
 static_assert(eq(OR(T)(F), T), "OR T F == T");
 static_assert(eq(OR(F)(T), T), "OR F T == T");
 static_assert(eq(OR(F)(F), F), "OR F F == F");
+// ANCHOR-END: OR
 
-/**
- * Boolean equality
- * λpq.p q (NOT q)
- */
+// ANCHOR-BEGIN: BEQ
+// BEQ p q = p q (NOT q)
 auto BEQ = [](auto p) {
   return [=](auto q) {
     return p(q)(NOT(q));
@@ -142,11 +124,10 @@ static_assert(eq(BEQ(T)(T), T), "BEQ T T == T");
 static_assert(eq(BEQ(T)(F), F), "BEQ T F == F");
 static_assert(eq(BEQ(F)(T), F), "BEQ F T == F");
 static_assert(eq(BEQ(F)(F), T), "BEQ F F == T");
+// ANCHOR-END: BEQ
 
-/**
- * Boolean exclusive disjunction
- * λpq.p (NOT q) q
- */
+// ANCHOR-BEGIN: XOR
+// XOR p q = p (NOT q) q
 auto XOR = [](auto p) {
   return [=](auto q) {
     return p(NOT(q))(q);
@@ -156,16 +137,13 @@ static_assert(eq(XOR(T)(T), F), "XOR T T == F");
 static_assert(eq(XOR(T)(F), T), "XOR T F == T");
 static_assert(eq(XOR(F)(T), T), "XOR F T == T");
 static_assert(eq(XOR(F)(F), F), "XOR F F == F");
+// ANCHOR-END: XOR
 
-/**
- * Church encoding of integers
- * Applies the first argument n times to the second argument
- * N0 = λfx.x = F = KI = CK
- * N1 = λfx.fx
- * N2 = λfx.f(fx)
- * N3 = λfx.f(f(fx))
- * ...
- */
+// Church numerals
+// N0 f x = x
+// N1 f x = f x
+// N2 f x = f (f x)
+// N3 f x = f (f (f x))
 auto N0 = [](auto f) {
   return [=](auto x) {
     return x;
@@ -191,9 +169,7 @@ static_assert(eq(N1(NOT)(F), T), "N1 NOT F == T");
 static_assert(eq(N2(NOT)(F), F), "N2 NOT F == F");
 static_assert(eq(N3(NOT)(F), T), "N3 NOT F == T");
 
-/**
- * Helper functions to convert Church integers to C++ integers
- */
+// Convert Church numerals to C++ integers.
 auto succ = [](int x) -> int {
   return x + 1;
 };
@@ -205,10 +181,8 @@ static_assert(nat(N1) == 1, "N1 = 1");
 static_assert(nat(N2) == 2, "N2 = 2");
 static_assert(nat(N3) == 3, "N3 = 3");
 
-/**
- * Successor
- * λnfx.f(nfx)
- */
+// ANCHOR-BEGIN: SUCC
+// SUCC n f x = f (n f x)
 auto SUCC = [](auto n) {
   return [=](auto f) {
     return [=](auto x) {
@@ -221,11 +195,10 @@ static_assert(nat(SUCC(SUCC(N0))) == 2, "SUCC SUCC N0 = 2");
 static_assert(nat(SUCC(SUCC(SUCC(N0)))) == 3, "SUCC SUCC SUCC N0 = 3");
 auto N4 = SUCC(N3);
 static_assert(nat(N4) == 4, "N4 = 4");
+// ANCHOR-END: SUCC
 
-/**
- * Predecessor
- * λnfx.n (λgh.h (g f)) (λu.x) (λu.u)
- */
+// ANCHOR-BEGIN: PRED
+// PRED n f x = n shift (K x) I, where shift f g = C I (g f)
 auto PRED = [](auto n) {
   return [=](auto f) {
     return [=](auto x) {
@@ -240,12 +213,10 @@ auto PRED = [](auto n) {
 static_assert(nat(PRED(N1)) == 0, "PRED N1 = 0");
 static_assert(nat(PRED(N2)) == 1, "PRED N2 = 1");
 static_assert(nat(PRED(N3)) == 2, "PRED N3 = 2");
+// ANCHOR-END: PRED
 
-/**
- * Bluebird combinator
- * composes two unary functions
- * λfgx.f(gx)
- */
+// ANCHOR-BEGIN: B
+// B f g x = f (g x)
 auto B = [](auto f) {
   return [=](auto g) {
     return [=](auto x) {
@@ -254,11 +225,10 @@ auto B = [](auto f) {
   };
 };
 static_assert(eq(B(NOT)(NOT)(T), T), "B(NOT) NOT T == T");
+// ANCHOR-END: B
 
-/**
- * Successor written in terms of B
- * λnf.Bf(nf)
- */
+// ANCHOR-BEGIN: SUCC2
+// SUCC2 n f x = B f (n f) x
 auto SUCC2 = [](auto n) {
   return [=](auto f) {
     return B(f)(n(f));
@@ -266,12 +236,10 @@ auto SUCC2 = [](auto n) {
 };
 static_assert(nat(SUCC2(N0)) == 1, "SUCC2 N0 = 1");
 static_assert(nat(SUCC2(N3)) == 4, "SUCC2 N3 = 4");
+// ANCHOR-END: SUCC2
 
-/**
- * Addition
- * applies SUCC n times to k
- * λnk.n SUCC k
- */
+// ANCHOR-BEGIN: ADD
+// ADD n k = n SUCC k
 auto ADD = [](auto n) {
   return [=](auto k) {
     return n(SUCC)(k);
@@ -279,11 +247,10 @@ auto ADD = [](auto n) {
 };
 auto N5 = ADD(N2)(N3);
 static_assert(nat(N5) == 5, "ADD N2 N3 = 5");
+// ANCHOR-END: ADD
 
-/**
- * Multiplication, equivalent to B
- * λnkf.n(kf)
- */
+// ANCHOR-BEGIN: MUL
+// MUL n k f = n (k f)
 auto MUL = [](auto n) {
   return [=](auto k) {
     return [=](auto f) {
@@ -296,11 +263,10 @@ auto N7 = ADD(MUL(N2)(N2))(MUL(N1)(N3));
 static_assert(nat(N6) == 6, "MUL N2 N3 = 6");
 static_assert(nat(N7) == 7, "ADD MUL N2 N2 MUL N1 N3 = 7");
 static_assert(nat(B(N2)(N3)) == 6, "B N2 N3 = 6");
+// ANCHOR-END: MUL
 
-/**
- * Exponentiation, equivalent to the Thrush combinator
- * λnk.kn
- */
+// ANCHOR-BEGIN: POW
+// POW n k = k n
 auto POW = [](auto n) {
   return [=](auto k) {
     return k(n);
@@ -312,25 +278,20 @@ auto N9 = Th(N3)(N2);
 static_assert(nat(N8) == 8, "POW N2 N3 = 8");
 static_assert(nat(N9) == 9, "Th N3 N2 = 9");
 static_assert(nat(POW(N3)(N4)) == 81, "POW N3 N4 = 81");
+// ANCHOR-END: POW
 
-/**
- * Check if n is zero
- * applies constant F to T by n times
- * λn.n KF T
- */
+// ANCHOR-BEGIN: IS_ZERO
+// IS_ZERO n = n (K F) T
 auto IS_ZERO = [](auto n) {
   return n(K(F))(T);
 };
 static_assert(eq(IS_ZERO(N0), T), "IS_ZERO N0 = T");
 static_assert(eq(IS_ZERO(N1), F), "IS_ZERO N1 = F");
 static_assert(eq(IS_ZERO(N2), F), "IS_ZERO N2 = F");
+// ANCHOR-END: IS_ZERO
 
-/**
- * Vireo combinator, equivalent to BCT
- * also used to hold a pair of arguments
- * holds a pair of args
- * λabf.fab
- */
+// ANCHOR-BEGIN: V_PAIR
+// V a b f = f a b
 auto V = [](auto a) {
   return [=](auto b) {
     return [=](auto f) {
@@ -342,36 +303,30 @@ static_assert(nat(V(N2)(N3)(ADD)) == 5, "V N2 N3 ADD = 5");
 static_assert(eq(V(I)(M)(K), I), "V I M K = I");
 static_assert(eq(V(I)(M)(KI), M), "V I M KI = M");
 
-/**
- * Church encoding of pairs, equivalent to V
- */
+// PAIR = V
 auto PAIR = V;
+// ANCHOR-END: V_PAIR
 
-/**
- * Extract first argument from a pair
- * λp.p K
- */
+// ANCHOR-BEGIN: FST
+// FST p = p K
 auto FST = [](auto p) {
   return p(K);
 };
 static_assert(eq(FST(PAIR(I)(M)), I), "FST PAIR I M = I");
 static_assert(eq(FST(PAIR(N2)(N3)), N2), "FST PAIR N2 N3 = N2");
+// ANCHOR-END: FST
 
-/**
- * Extract second argument from a pair
- * λp.p KI
- */
+// ANCHOR-BEGIN: SND
+// SND p = p KI
 auto SND = [](auto p) {
   return p(KI);
 };
 static_assert(eq(SND(PAIR(I)(M)), M), "SND PAIR I M = M");
 static_assert(eq(SND(PAIR(N2)(N3)), N3), "SND PAIR N2 N3 = N3");
+// ANCHOR-END: SND
 
-/**
- * Phi combinator
- * copy second argument to first argument and increment second argument
- * λp. PAIR (SND p) (SUCC (SND p))
- */
+// ANCHOR-BEGIN: PHI
+// PHI p = PAIR (SND p) (SUCC (SND p))
 auto PHI = [](auto p) {
   return V(SND(p))(SUCC(SND(p)));
 };
@@ -379,23 +334,20 @@ static_assert(nat(FST(PHI(PAIR(N0)(N0)))) == 0, "FST PHI PAIR N0 N0 = 0");
 static_assert(nat(SND(PHI(PAIR(N0)(N0)))) == 1, "SND PHI PAIR N0 N0 = 1");
 static_assert(nat(FST(N3(PHI)(PAIR(N0)(N0)))) == 2,
               "FST N3 PHI PAIR N0 N0 = 2");
+// ANCHOR-END: PHI
 
-/**
- * Predecessor written in terms of PHI
- * λn. FST (n PHI (PAIR N0 N0))
- */
+// ANCHOR-BEGIN: PRED2
+// PRED2 n = FST (n PHI (PAIR N0 N0))
 auto PRED2 = [](auto n) {
   return FST(n(PHI)(PAIR(N0)(N0)));
 };
 static_assert(nat(PRED2(N1)) == 0, "PRED2 N1 = 0");
 static_assert(nat(PRED2(N2)) == 1, "PRED2 N2 = 1");
 static_assert(nat(PRED2(N3)) == 2, "PRED2 N3 = 2");
+// ANCHOR-END: PRED2
 
-/**
- * Subtraction
- * applies PRED n times to k
- * λnk.k PRED n
- */
+// ANCHOR-BEGIN: SUB
+// SUB n k = k PRED n
 auto SUB = [](auto n) {
   return [=](auto k) {
     return k(PRED)(n);
@@ -405,12 +357,10 @@ static_assert(nat(SUB(N0)(N0)) == 0, "SUB N0 N0 = 0");
 static_assert(nat(SUB(N3)(N1)) == 2, "SUB N3 N1 = 2");
 static_assert(nat(SUB(N3)(N2)) == 1, "SUB N3 N2 = 1");
 static_assert(nat(SUB(N9)(N2)) == 7, "SUB N9 N2 = 7");
+// ANCHOR-END: SUB
 
-/**
- * Less than or equal
- * checks if the result of SUB is zero
- * λnk.IS_ZERO (SUB n k)
- */
+// ANCHOR-BEGIN: LEQ
+// LEQ n k = IS_ZERO (SUB n k)
 auto LEQ = [](auto n) {
   return [=](auto k) {
     return IS_ZERO(SUB(n)(k));
@@ -419,12 +369,10 @@ auto LEQ = [](auto n) {
 static_assert(eq(LEQ(N1)(N3), T), "LEQ N1 N3 = T");
 static_assert(eq(LEQ(N2)(N2), T), "LEQ N2 N2 = T");
 static_assert(eq(LEQ(N3)(N1), F), "LEQ N3 N1 = F");
+// ANCHOR-END: LEQ
 
-/**
- * Equality
- * checks if LEQ is true on both directions
- * λnk.AND (LEQ n k) (LEQ k n)
- */
+// ANCHOR-BEGIN: EQ
+// EQ n k = AND (LEQ n k) (LEQ k n)
 auto EQ = [](auto n) {
   return [=](auto k) {
     return AND(LEQ(n)(k))(LEQ(k)(n));
@@ -433,12 +381,10 @@ auto EQ = [](auto n) {
 static_assert(eq(EQ(N1)(N3), F), "EQ N1 N3 = F");
 static_assert(eq(EQ(N2)(N2), T), "EQ N2 N2 = T");
 static_assert(eq(EQ(N3)(N1), F), "EQ N3 N1 = F");
+// ANCHOR-END: EQ
 
-/**
- * Greater than
- * negation of LEQ
- * λnk.NOT (LEQ n k)
- */
+// ANCHOR-BEGIN: GT
+// GT n k = NOT (LEQ n k)
 auto GT = [](auto n) {
   return [=](auto k) {
     return NOT(LEQ(n)(k));
@@ -447,12 +393,10 @@ auto GT = [](auto n) {
 static_assert(eq(GT(N1)(N3), F), "GT N1 N3 = F");
 static_assert(eq(GT(N2)(N2), F), "GT N2 N2 = F");
 static_assert(eq(GT(N3)(N1), T), "GT N3 N1 = T");
+// ANCHOR-END: GT
 
-/**
- * Blackbird combinator, equivalent to BBB
- * composes an unary function with a binary function
- * λfgab.f (g a b)
- */
+// ANCHOR-BEGIN: B1
+// B1 f g a b = f (g a b)
 auto B1 = [](auto f) {
   return [=](auto g) {
     return [=](auto a) {
@@ -462,20 +406,18 @@ auto B1 = [](auto f) {
     };
   };
 };
+// ANCHOR-END: B1
 
-/**
- * Greater than written in terms of B1
- * composition of NOT and LEQ
- */
+// ANCHOR-BEGIN: GT2
+// GT2 n k = B1 NOT LEQ n k = NOT (LEQ n k)
 auto GT2 = B1(NOT)(LEQ);
 static_assert(eq(GT2(N1)(N3), F), "GT2 N1 N3 = F");
 static_assert(eq(GT2(N2)(N2), F), "GT2 N2 N2 = F");
 static_assert(eq(GT2(N3)(N1), T), "GT2 N3 N1 = T");
+// ANCHOR-END: GT2
 
-/**
- * Set the first element of a pair
- * λxp.PAIR x (SND p)
- */
+// ANCHOR-BEGIN: SET_FST
+// SET_FST x p = PAIR x (SND p)
 auto SET_FST = [](auto x) {
   return [=](auto p) {
     return PAIR(x)(SND(p));
@@ -483,11 +425,10 @@ auto SET_FST = [](auto x) {
 };
 static_assert(nat(FST(SET_FST(N3)(PAIR(N1)(N2)))) == 3,
               "FST SET_FST N3 PAIR N1 N2 = 3");
+// ANCHOR-END: SET_FST
 
-/**
- * Set the second element of a pair
- * λxp.PAIR (FST p) x
- */
+// ANCHOR-BEGIN: SET_SND
+// SET_SND x p = PAIR (FST p) x
 auto SET_SND = [](auto x) {
   return [=](auto p) {
     return PAIR(FST(p))(x);
@@ -495,11 +436,10 @@ auto SET_SND = [](auto x) {
 };
 static_assert(nat(SND(SET_SND(N3)(PAIR(N1)(N2)))) == 3,
               "SND SET_SND N3 PAIR N1 N2 = 3");
+// ANCHOR-END: SET_SND
 
-/**
- * Fibonacci function
- * λn.n (λfab.f b(ADD a b)) K 0 1
- */
+// ANCHOR-BEGIN: FIB
+// FIB n = n step K N0 N1, where step f a b = f b (ADD a b)
 auto FIB = [](auto n) {
   return n([](auto f) {
     return [=](auto a) {
@@ -519,12 +459,10 @@ static_assert(nat(FIB(N6)) == 8, "FIB N6 = 8");
 static_assert(nat(FIB(N7)) == 13, "FIB N7 = 13");
 static_assert(nat(FIB(N8)) == 21, "FIB N8 = 21");
 static_assert(nat(FIB(N9)) == 34, "FIB N9 = 34");
+// ANCHOR-END: FIB
 
-/**
- * Y combinator
- * λf.(λx.f (x x)) (λx.f (x x))
- * Unfortunately, this is not possible in C++ because of eager evaluation
- */
+// ANCHOR-BEGIN: Y
+// Y = λf.(λx.f (x x)) (λx.f (x x))
 auto Y = [](auto f) {
   return [=](auto x) {
     return f(x(x));
@@ -532,12 +470,10 @@ auto Y = [](auto f) {
     return f(x(x));
   });
 };
+// ANCHOR-END: Y
 
-/**
- * Z combinator
- * λf.(λx.f (λv.x x v)) (λx.f (λv.x x v))
- * Unfortunately, this is not possible in C++ as well due to the type system
- */
+// ANCHOR-BEGIN: Z
+// Z = λf.(λx.f (λv.x x v)) (λx.f (λv.x x v))
 auto Z = [](auto f) {
   return [=](auto x) {
     return f([=](auto v) {
@@ -549,3 +485,4 @@ auto Z = [](auto f) {
     });
   });
 };
+// ANCHOR-END: Z
