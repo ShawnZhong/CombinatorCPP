@@ -175,11 +175,8 @@ static_assert(eq(N3(NOT)(F), T));
 auto succ = [](int x) -> int {
   return x + 1;
 };
-auto to_nat = [](auto n) -> int {
-  return n(succ)(0);
-};
 auto eq_nat = [](auto n, int x) -> bool {
-  return to_nat(n) == x;
+  return n(succ)(0) == x;
 };
 static_assert(eq_nat(N0, 0));
 static_assert(eq_nat(N1, 1));

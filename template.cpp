@@ -252,10 +252,8 @@ struct succ {
   template <typename N>
   using of = nat<N::value + 1>;
 };
-template <typename N>
-using to_nat = ap<N, succ, nat<0>>;
 template <typename A, int N>
-using is_same_nat = is_same<to_nat<A>, nat<N>>;
+using is_same_nat = is_same<ap<A, succ, nat<0>>, nat<N>>;
 #define eq_nat(...) (is_same_nat<__VA_ARGS__>::value)
 static_assert(eq_nat(N0, 0), "");
 static_assert(eq_nat(N1, 1), "");
