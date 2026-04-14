@@ -196,8 +196,8 @@ auto SUCC = [](auto n) {
   };
 };
 static_assert(eq_nat(SUCC(N0), 1));
-static_assert(eq_nat(SUCC(SUCC(N0)), 2));
-static_assert(eq_nat(SUCC(SUCC(SUCC(N0))), 3));
+static_assert(eq_nat(SUCC(N1), 2));
+static_assert(eq_nat(SUCC(N2), 3));
 auto N4 = SUCC(N3);
 static_assert(eq_nat(N4, 4));
 // ANCHOR-END: SUCC
@@ -265,7 +265,7 @@ auto MUL = [](auto n) {
   };
 };
 auto N6 = MUL(N2)(N3);
-auto N7 = ADD(MUL(N2)(N2))(MUL(N1)(N3));
+auto N7 = ADD(N4)(MUL(N1)(N3));
 static_assert(eq_nat(N6, 6));
 static_assert(eq_nat(N7, 7));
 static_assert(eq_nat(B(N2)(N3), 6));

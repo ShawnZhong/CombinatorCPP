@@ -284,7 +284,8 @@ static_assert(eq_nat(N4, 4), "");
 // ANCHOR-END: SUCC
 
 // ANCHOR-BEGIN: PRED
-// PRED n f x = n shift (K x) I, where shift f g = C I (g f)
+// PRED n f x = n shift (K x) I,
+//   where shift f g = C I (g f)
 struct PRED {
   struct shift {
     template <typename F>
@@ -386,7 +387,7 @@ struct MUL {
 };
 using N6 = ap<MUL, N2, N3>;
 static_assert(eq_nat(N6, 6), "");
-using N7 = ap<ADD, ap<MUL, N2, N2>, ap<MUL, N1, N3>>;
+using N7 = ap<ADD, N4, ap<MUL, N1, N3>>;
 static_assert(eq_nat(N7, 7), "");
 static_assert(eq_nat(ap<B, N6, N7>, 42), "");
 // ANCHOR-END: MUL
