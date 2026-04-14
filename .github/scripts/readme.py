@@ -47,7 +47,7 @@ def collect_source_ranges(filename: str) -> dict[str, tuple[int, int]]:
             raise ValueError(
                 f"{filename}: anchor end for {anchor} does not match begin for {open_anchor[0]}"
             )
-        anchors[anchor] = (open_anchor[1], line_number)
+        anchors[anchor] = (open_anchor[1] + 1, line_number - 1)
         open_anchor = None
 
     if open_anchor is not None:
@@ -66,10 +66,7 @@ def current_head_hash() -> str:
 
 def render_links(filename: str, line_range: tuple[int, int], commit_hash: str) -> str:
     start, end = line_range
-    return (
-        f"[`L{start}-L{end}`]"
-        f"({GITHUB_BLOB_BASE}/{commit_hash}/{filename}#L{start}-L{end})"
-    )
+    return f"{GITHUB_BLOB_BASE}/{commit_hash}/{filename}#L{start}-L{end}"
 
 
 def render_table(
