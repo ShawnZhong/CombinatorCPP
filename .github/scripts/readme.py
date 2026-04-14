@@ -74,12 +74,12 @@ def render_table(
 ) -> str:
     return "\n".join(
         [
-            "| `lambda.cpp` | `template.cpp` |",
-            "| --- | --- |",
-            (
-                f"| {render_links('lambda.cpp', lambda_range, commit_hash)} | "
-                f"{render_links('template.cpp', template_range, commit_hash)} |"
-            ),
+            "<table>",
+            "  <tr>",
+            f"    <td>{render_links('lambda.cpp', lambda_range, commit_hash)}</td>",
+            f"    <td>{render_links('template.cpp', template_range, commit_hash)}</td>",
+            "  </tr>",
+            "</table>",
             "",
         ]
     )
