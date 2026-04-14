@@ -336,9 +336,10 @@ static_assert(eq(SND(PAIR(N2)(N3)), N3));
 auto PHI = [](auto p) {
   return V(SND(p))(SUCC(SND(p)));
 };
-static_assert(eq_nat(FST(PHI(PAIR(N0)(N0))), 0));
-static_assert(eq_nat(SND(PHI(PAIR(N0)(N0))), 1));
-static_assert(eq_nat(FST(N3(PHI)(PAIR(N0)(N0))), 2));
+auto N0N0 = PAIR(N0)(N0);
+static_assert(eq_nat(FST(PHI(N0N0)), 0));
+static_assert(eq_nat(SND(PHI(N0N0)), 1));
+static_assert(eq_nat(FST(N3(PHI)(N0N0)), 2));
 // ANCHOR-END: PHI
 
 // ANCHOR-BEGIN: PRED2
