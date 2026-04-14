@@ -597,9 +597,9 @@ struct SET_FST {
   template <typename X>
   using of = with_x<X>;
 };
-static_assert(
-    eq_nat(ap<FST, ap<SET_FST, N3, ap<PAIR, N1, N2>>>, 3),
-    "");
+using N1N2 = ap<PAIR, N1, N2>;
+static_assert(eq_nat(ap<FST, ap<SET_FST, N3, N1N2>>, 3),
+              "");
 // ANCHOR-END: SET_FST
 
 // ANCHOR-BEGIN: SET_SND
@@ -613,13 +613,13 @@ struct SET_SND {
   template <typename X>
   using of = with_x<X>;
 };
-static_assert(
-    eq_nat(ap<SND, ap<SET_SND, N3, ap<PAIR, N1, N2>>>, 3),
-    "");
+static_assert(eq_nat(ap<SND, ap<SET_SND, N3, N1N2>>, 3),
+              "");
 // ANCHOR-END: SET_SND
 
 // ANCHOR-BEGIN: FIB
-// FIB n = n step K N0 N1, where step f a b = f b (ADD a b)
+// FIB n = n step K N0 N1,
+//   where step f a b = f b (ADD a b)
 struct FIB {
   struct step {
     template <typename F>

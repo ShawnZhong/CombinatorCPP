@@ -428,7 +428,8 @@ auto SET_FST = [](auto x) {
     return PAIR(x)(SND(p));
   };
 };
-static_assert(eq_nat(FST(SET_FST(N3)(PAIR(N1)(N2))), 3));
+auto N1N2 = PAIR(N1)(N2);
+static_assert(eq_nat(FST(SET_FST(N3)(N1N2)), 3));
 // ANCHOR-END: SET_FST
 
 // ANCHOR-BEGIN: SET_SND
@@ -438,7 +439,7 @@ auto SET_SND = [](auto x) {
     return PAIR(FST(p))(x);
   };
 };
-static_assert(eq_nat(SND(SET_SND(N3)(PAIR(N1)(N2))), 3));
+static_assert(eq_nat(SND(SET_SND(N3)(N1N2)), 3));
 // ANCHOR-END: SET_SND
 
 // ANCHOR-BEGIN: FIB
