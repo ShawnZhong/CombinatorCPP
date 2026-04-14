@@ -1,8 +1,10 @@
 // Helper to compare if two lambda terms have the same type.
-template <typename A, typename B> struct is_same {
+template <typename A, typename B>
+struct is_same {
   static constexpr bool value = false;
 };
-template <typename T> struct is_same<T, T> {
+template <typename T>
+struct is_same<T, T> {
   static constexpr bool value = true;
 };
 auto eq = [](auto F, auto G) -> bool {
@@ -69,7 +71,7 @@ static_assert(eq(KI(I)(M), M));
 // T x y = x
 // F x y = y
 auto T = K;
-auto F = KI; // == C K
+auto F = KI;  // == C K
 static_assert(eq(T(T)(F), T));
 static_assert(eq(F(T)(F), F));
 // ANCHOR-END: T_F
