@@ -548,3 +548,5 @@ struct Z {
   template <typename F> using of = ap<self_apply<F>, self_apply<F>>;
 };
 // ANCHOR-END: Z
+
+int main() { return 0; }

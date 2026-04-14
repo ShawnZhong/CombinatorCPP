@@ -1,8 +1,8 @@
 .PHONY: all clean
 
 all:
-	c++ -std=c++17 -c lambda.cpp -o lambda.o
-	c++ -std=c++11 -c template.cpp -o template.o
+	c++ -std=c++17 lambda.cpp -o lambda
+	c++ -std=c++11 template.cpp -o template
 
 clean:
-	rm -f *.o
+	rm -f lambda template
