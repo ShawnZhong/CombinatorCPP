@@ -201,7 +201,8 @@ static_assert(eq_nat(N4, 4));
 // ANCHOR-END: SUCC
 
 // ANCHOR-BEGIN: PRED
-// PRED n f x = n shift (K x) I, where shift f g = C I (g f)
+// PRED n f x = n shift (K x) I,
+//   where shift f g = C I (g f)
 auto PRED = [](auto n) {
   return [=](auto f) {
     return [=](auto x) {
@@ -439,7 +440,8 @@ static_assert(eq_nat(SND(SET_SND(N3)(PAIR(N1)(N2))), 3));
 // ANCHOR-END: SET_SND
 
 // ANCHOR-BEGIN: FIB
-// FIB n = n step K N0 N1, where step f a b = f b (ADD a b)
+// FIB n = n step K N0 N1,
+//   where step f a b = f b (ADD a b)
 auto FIB = [](auto n) {
   return n([](auto f) {
     return [=](auto a) {
