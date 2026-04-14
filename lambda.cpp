@@ -1,4 +1,4 @@
-// Helper to compare whether two functions have the same type.
+// Helper to compare if two lambda terms have the same type.
 template <typename A, typename B> struct is_same {
   static constexpr bool value = false;
 };

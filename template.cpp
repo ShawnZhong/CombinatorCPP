@@ -8,14 +8,17 @@ template <typename T> struct is_same<T, T> {
 #define eq(...) (is_same<__VA_ARGS__>::value)
 
 // Helper for curried application.
-// For example, `ap<F, X, Y>` means `F::of<X>::of<Y>`.
+// For example, `ap<F, X, Y>` := `F::of<X>::of<Y>`.
 template <typename F, typename... Xs> struct apply {
   using type = F;
 };
-template <typename F, typename X, typename... Xs> struct apply<F, X, Xs...> {
-  using type = typename apply<typename F::template of<X>, Xs...>::type;
+template <typename F, typename X, typename... Xs>
+struct apply<F, X, Xs...> {
+  using type = typename apply<typename F::template of<X>,
+                              Xs...>::type;
 };
-template <typename F, typename... Xs> using ap = typename apply<F, Xs...>::type;
+template <typename F, typename... Xs>
+using ap = typename apply<F, Xs...>::type;
 
 // ANCHOR-BEGIN: I
 // I x = x
@@ -203,7 +206,8 @@ struct succ {
   template <typename N> using of = nat<N::value + 1>;
 };
 template <typename N> using to_nat = ap<N, succ, nat<0>>;
-template <typename A, int N> using is_same_nat = is_same<to_nat<A>, nat<N>>;
+template <typename A, int N>
+using is_same_nat = is_same<to_nat<A>, nat<N>>;
 #define eq_nat(...) (is_same_nat<__VA_ARGS__>::value)
 static_assert(eq_nat(N0, 0), "");
 static_assert(eq_nat(N1, 1), "");
@@ -222,9 +226,9 @@ struct SUCC {
   template <typename N> using of = with_n<N>;
 };
 static_assert(eq_nat(ap<SUCC, N0>, 1), "");
-static_assert(eq_nat(ap<SUCC, ap<SUCC, N0>>, 2), "");
-static_assert(eq_nat(ap<SUCC, ap<SUCC, ap<SUCC, N0>>>, 3), "");
-using N4 = SUCC::of<N3>;
+static_assert(eq_nat(ap<SUCC, N1>, 2), "");
+static_assert(eq_nat(ap<SUCC, N2>, 3), "");
+using N4 = ap<SUCC, N3>;
 static_assert(eq_nat(N4, 4), "");
 // ANCHOR-END: SUCC
 
@@ -240,7 +244,8 @@ struct PRED {
 
   template <typename N> struct with_n {
     template <typename F> struct with_f {
-      template <typename X> using of = ap<N, ap<shift, F>, ap<K, X>, I>;
+      template <typename X>
+      using of = ap<N, ap<shift, F>, ap<K, X>, I>;
     };
     template <typename F> using of = with_f<F>;
   };
@@ -270,7 +275,8 @@ static_assert(eq(ap<B, NOT, NOT, T>, T), "");
 struct SUCC2 {
   template <typename N> struct with_n {
     template <typename F> struct with_f {
-      template <typename X> using of = ap<B, F, ap<N, F>, X>;
+      template <typename X>
+      using of = ap<B, F, ap<N, F>, X>;
     };
     template <typename F> using of = with_f<F>;
   };
@@ -288,7 +294,7 @@ struct ADD {
   };
   template <typename N> using of = with_n<N>;
 };
-using N5 = ADD::of<N2>::of<N3>;
+using N5 = ap<ADD, N2, N3>;
 static_assert(eq_nat(N5, 5), "");
 // ANCHOR-END: ADD
 
@@ -303,9 +309,9 @@ struct MUL {
   };
   template <typename N> using of = with_n<N>;
 };
-using N6 = MUL::of<N2>::of<N3>;
+using N6 = ap<MUL, N2, N3>;
 static_assert(eq_nat(N6, 6), "");
-using N7 = ADD::of<MUL::of<N2>::of<N2>>::of<MUL::of<N1>::of<N3>>;
+using N7 = ap<ADD, ap<MUL, N2, N2>, ap<MUL, N1, N3>>;
 static_assert(eq_nat(N7, 7), "");
 static_assert(eq_nat(ap<B, N6, N7>, 42), "");
 // ANCHOR-END: MUL
@@ -321,8 +327,8 @@ struct POW {
   };
   template <typename N> using of = with_n<N>;
 };
-using N8 = POW::of<N2>::of<N3>;
-using N9 = POW::of<N3>::of<N2>;
+using N8 = ap<POW, N2, N3>;
+using N9 = ap<POW, N3, N2>;
 static_assert(eq_nat(N8, 8), "");
 static_assert(eq_nat(N9, 9), "");
 // ANCHOR-END: POW
@@ -377,17 +383,20 @@ static_assert(eq(ap<SND, ap<PAIR, N2, N3>>, N3), "");
 // ANCHOR-BEGIN: PHI
 // PHI p = PAIR (SND p) (SUCC (SND p))
 struct PHI {
-  template <typename P> using of = ap<PAIR, ap<SND, P>, ap<SUCC, ap<SND, P>>>;
+  template <typename P>
+  using of = ap<PAIR, ap<SND, P>, ap<SUCC, ap<SND, P>>>;
 };
-static_assert(eq_nat(ap<FST, ap<PHI, ap<PAIR, N0, N0>>>, 0), "");
-static_assert(eq_nat(ap<SND, ap<PHI, ap<PAIR, N0, N0>>>, 1), "");
-static_assert(eq_nat(ap<FST, ap<N3, PHI, ap<PAIR, N0, N0>>>, 2), "");
+using N0N0 = ap<PAIR, N0, N0>;
+static_assert(eq_nat(ap<FST, ap<PHI, N0N0>>, 0), "");
+static_assert(eq_nat(ap<SND, ap<PHI, N0N0>>, 1), "");
+static_assert(eq_nat(ap<FST, ap<N3, PHI, N0N0>>, 2), "");
 // ANCHOR-END: PHI
 
 // ANCHOR-BEGIN: PRED2
 // PRED2 n = FST (n PHI (PAIR N0 N0))
 struct PRED2 {
-  template <typename N> using of = ap<FST, ap<N, PHI, ap<PAIR, N0, N0>>>;
+  template <typename N>
+  using of = ap<FST, ap<N, PHI, N0N0>>;
 };
 static_assert(eq_nat(ap<PRED2, N1>, 0), "");
 static_assert(eq_nat(ap<PRED2, N2>, 1), "");
@@ -411,7 +420,8 @@ static_assert(eq_nat(ap<SUB, N3, N2>, 1), "");
 // LEQ n k = IS_ZERO (SUB n k)
 struct LEQ {
   template <typename N> struct with_n {
-    template <typename K> using of = ap<IS_ZERO, ap<SUB, N, K>>;
+    template <typename K>
+    using of = ap<IS_ZERO, ap<SUB, N, K>>;
   };
   template <typename N> using of = with_n<N>;
 };
@@ -424,7 +434,8 @@ static_assert(eq(ap<LEQ, N3, N1>, F), "");
 // EQ n k = AND (LEQ n k) (LEQ k n)
 struct EQ {
   template <typename N> struct with_n {
-    template <typename K> using of = ap<AND, ap<LEQ, N, K>, ap<LEQ, K, N>>;
+    template <typename K>
+    using of = ap<AND, ap<LEQ, N, K>, ap<LEQ, K, N>>;
   };
   template <typename N> using of = with_n<N>;
 };
@@ -464,7 +475,7 @@ struct B1 {
 
 // ANCHOR-BEGIN: GT2
 // GT2 n k = B1 NOT LEQ n k = NOT (LEQ n k)
-using GT2 = B1::of<NOT>::of<LEQ>;
+using GT2 = ap<B1, NOT, LEQ>;
 static_assert(eq(ap<GT2, N1, N3>, F), "");
 static_assert(eq(ap<GT2, N2, N2>, F), "");
 static_assert(eq(ap<GT2, N3, N1>, T), "");
@@ -474,22 +485,28 @@ static_assert(eq(ap<GT2, N3, N1>, T), "");
 // SET_FST x p = PAIR x (SND p)
 struct SET_FST {
   template <typename X> struct with_x {
-    template <typename P> using of = ap<PAIR, X, ap<SND, P>>;
+    template <typename P>
+    using of = ap<PAIR, X, ap<SND, P>>;
   };
   template <typename X> using of = with_x<X>;
 };
-static_assert(eq_nat(ap<FST, ap<SET_FST, N3, ap<PAIR, N1, N2>>>, 3), "");
+static_assert(
+    eq_nat(ap<FST, ap<SET_FST, N3, ap<PAIR, N1, N2>>>, 3),
+    "");
 // ANCHOR-END: SET_FST
 
 // ANCHOR-BEGIN: SET_SND
 // SET_SND x p = PAIR (FST p) x
 struct SET_SND {
   template <typename X> struct with_x {
-    template <typename P> using of = ap<PAIR, ap<FST, P>, X>;
+    template <typename P>
+    using of = ap<PAIR, ap<FST, P>, X>;
   };
   template <typename X> using of = with_x<X>;
 };
-static_assert(eq_nat(ap<SND, ap<SET_SND, N3, ap<PAIR, N1, N2>>>, 3), "");
+static_assert(
+    eq_nat(ap<SND, ap<SET_SND, N3, ap<PAIR, N1, N2>>>, 3),
+    "");
 // ANCHOR-END: SET_SND
 
 // ANCHOR-BEGIN: FIB
@@ -498,7 +515,8 @@ struct FIB {
   struct step {
     template <typename F> struct with_f {
       template <typename A> struct with_a {
-        template <typename B> using of = ap<F, B, ap<ADD, A, B>>;
+        template <typename B>
+        using of = ap<F, B, ap<ADD, A, B>>;
       };
       template <typename A> using of = with_a<A>;
     };
@@ -524,7 +542,8 @@ struct Y {
   template <typename F> struct self_apply {
     template <typename X> using of = ap<F, ap<X, X>>;
   };
-  template <typename F> using of = ap<self_apply<F>, self_apply<F>>;
+  template <typename F>
+  using of = ap<self_apply<F>, self_apply<F>>;
 };
 // ANCHOR-END: Y
 
@@ -535,9 +554,11 @@ struct Z {
     template <typename X> struct delayed_self_apply {
       template <typename V> using of = ap<X, X, V>;
     };
-    template <typename X> using of = ap<F, delayed_self_apply<X>>;
+    template <typename X>
+    using of = ap<F, delayed_self_apply<X>>;
   };
-  template <typename F> using of = ap<self_apply<F>, self_apply<F>>;
+  template <typename F>
+  using of = ap<self_apply<F>, self_apply<F>>;
 };
 // ANCHOR-END: Z
 
