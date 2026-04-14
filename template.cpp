@@ -10,12 +10,12 @@ template <typename T> struct is_same<T, T> {
 // Helper for curried application.
 // For example, `ap<F, X, Y>` means `F::of<X>::of<Y>`.
 template <typename F, typename... Xs> struct apply {
-  using of = F;
+  using type = F;
 };
 template <typename F, typename X, typename... Xs> struct apply<F, X, Xs...> {
-  using of = typename apply<typename F::template of<X>, Xs...>::of;
+  using type = typename apply<typename F::template of<X>, Xs...>::type;
 };
-template <typename F, typename... Xs> using ap = typename apply<F, Xs...>::of;
+template <typename F, typename... Xs> using ap = typename apply<F, Xs...>::type;
 
 // ANCHOR-BEGIN: I
 // I x = x
